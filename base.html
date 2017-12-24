@@ -1,0 +1,595 @@
+<!doctype html>
+<html>
+  <head>
+    <title>AMNON18 Service Server</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+	font: 13px Helvetica, Arial;
+	background-color: #28a1d8;
+}
+      form { padding: 3px;  bottom: 0; width: 100%; }
+      form input {border: 1; padding: 10px; width: 82%; margin-right: 9%; }
+      form button {
+	width: 9%;
+	background: rgb(130, 224, 255);
+	border: none;
+	padding: 10px;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 18px;
+	border-radius: 25px;
+}
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      #messages { margin-bottom: 40px }
+    .title {
+	color: #FFFFFF;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 30px;
+	font-variant: normal;
+	font-weight: bold;
+	text-align: right;
+}
+    .bottomline {
+	color: #FFFFFF;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 10px;
+	background-color: #3e454d;
+}
+    .status {
+	color: #19FFFB;
+	font-size: 10px;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	background-color: #053A72;
+}
+    .paratitles {
+	color: #FFFFFF;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 14px;
+	background-color: #3e454d;
+	font-style: normal;
+}
+.commands {
+	color: #FFFFFF;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 14px;
+	background-color: #28A1D8;
+	font-style: normal;
+	margin-left: 5;
+	text-align: left;
+}
+.paradata {
+	color: #FFFFFF;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: bold;
+	text-align: right;
+}
+.eepromtitles {
+	color: #3e454d;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 8px;
+	font-style: normal;
+	font-weight: bold;
+	text-align: right;
+	width: 12px;
+	height: 0px;
+}
+.eepromdata {
+	color: #3e454d;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 8px;
+	font-style: normal;
+	font-weight: normal;
+	text-align: right;
+	width: 12px;
+	height: 0px;
+}
+.eepromdatab {
+	color: #3e454d;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 8px;
+	font-style: normal;
+	font-weight: bold;
+	text-align: right;
+	width: 12px;
+	height: 0px;
+}
+.eepromtitles1000 {
+	color: #3e454d;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 8px;
+	font-style: normal;
+	font-weight: normal;
+	text-align: right;
+	width: 16px;
+}
+.remoteinfotable {
+	border-radius: 25px;
+}
+.paratitlesMAIN {
+	color: #FFFFFF;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 16px;
+	background-color: #0177A2;
+}
+
+}
+    </style>
+  <meta charset="utf-8">
+  </head>
+  <body>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <form action="">
+  
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="96" align="left" valign="top" bgcolor="#28a1d8" class="commands"><img src="http://www.amnon18.com/logobl.jpg" width="300" height="56" alt=""/></td>
+          <td width="247" valign="top" bgcolor="#28a1d8">&nbsp;</td>
+          <td width="867" align="right" valign="top" bgcolor="#28a1d8" class="title"><p>REMOTE APPLICATION CONSOLE</p>
+          <p style="font-size: 12px">Version 1.0</p></td>
+        </tr>
+        <tr>
+          <td height="8" class="bottomline"><p class="paratitles">REMOTE AMNON18 INFORMATION</p></td>
+          <td height="100%" colspan="2" rowspan="2" align="center" valign="top" bgcolor="#28a1d8" >
+	        <textarea cols="180" rows="40" id="messages"></textarea>
+              <span class="commands"> M=Complete  E=Read EEPROM o=Options d=Date t=Time v=Valet</span><br>
+
+	    	  <input name="m" id="m" autofocus autocomplete="off"><button>SEND</button>
+          </td>
+        </tr>
+        <tr>
+          <td height="518" valign="top" bgcolor="#28a1d8"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td width="63%" bgcolor="#2080a8" class="paratitlesMAIN">SYSTEM</td>
+                <td width="37%" bgcolor="#3e454d" class="paratitlesMAIN">&nbsp;</td>
+              </tr>
+              <tr>
+                <td width="63%" align="right" bgcolor="#3e454d" class="paratitles">DATE</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_date" id="r_date"></p></td>
+
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#3e454d" class="paratitles">TIME</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_time" id="r_time"></p></td>
+              </tr>
+              <tr>
+                <td bgcolor="#2080a8" class="paratitlesMAIN">PARAMETERS</td>
+                <td align="right" bgcolor="#3e454d" class="paratitlesMAIN">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">TEMPERATURE HOL</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para1" id="r_para1"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">TEMPERATURE YOM TOV</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para2" id="r_para2"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">T - HOUR</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para3" id="r_para3"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">RANDOM IGNITIONS PER HOUR</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para4" id="r_para4"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">MAX. IGNITION LENGTH</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para5" id="r_para5"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">RESIDUAL ENERGY DEGREE</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para6" id="r_para6"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">MODE</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para8" id="r_para8"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">TANK TYPE</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para9" id="r_para9"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles"><p>TANK SIZE</p></td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para13" id="r_para13"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">TEMPERATURE BUFFER</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para11" id="r_para11"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">IGNITION PURGE</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para10" id="r_para10"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">LEGIONNAIRES PREVENTION</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para7" id="r_para7"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">AUTO VALVE CHECK</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para14" id="r_para14"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">AUTO BALANCE</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para12" id="r_para12"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">PRE-BALANCE MINUTES</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para17" id="r_para17"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">HOLIDAY TEMPERATURE</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para15" id="r_para15"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">NIGHT IGNITION</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_para16" id="r_para16"></p></td>
+              </tr>
+              <tr>
+                <td bgcolor="#2080a8" class="paratitlesMAIN">VALET</td>
+                <td align="right" bgcolor="#3e454d" class="paratitlesMAIN">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">FRIDAY</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_vasl1" id="r_val1"></p></td>
+              </tr>
+              <tr>
+                <td height="15" align="right" bgcolor="#2080a8" class="paratitles"><p>FROM/PERIOD</p></td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_vasl2" id="r_val2"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">SATURDAY</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_vasl3" id="r_val3"></p></td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">FROM/PERIOD</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_vasl4" id="r_val4"></p></td>
+              </tr>
+              <tr>
+                <td bgcolor="#2080a8" class="paratitlesMAIN">ECO</td>
+                <td align="right" bgcolor="#3e454d" class="paratitlesMAIN">&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#2080a8" class="paratitles">ECONOFLOW</td>
+                <td align="right" bgcolor="#3e454d"><p class="paradata" name="r_econo" id="r_econo"></p></td>
+              </tr>
+              <tr>
+                <td bgcolor="#2080a8" class="paratitlesMAIN">&nbsp;</td>
+                <td align="right" bgcolor="#3e454d" class="paratitlesMAIN">&nbsp;</td>
+              </tr>
+              <tr>
+                <td bgcolor="#2080a8" class="paratitlesMAIN">&nbsp;</td>
+                <td align="right" bgcolor="#3e454d" class="paratitlesMAIN"><br></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p></td>
+        </tr>
+        <tr>
+	        <td colspan="3">
+    	      <table id="eepromtab" name="eepromtab" width="100%" border="0" cellspacing="0" cellpadding="0" >
+              <tr>
+              	<td colspan="101" class="paratitles">REMOTE EEPROM DATA</td>
+              </tr>
+              </table>
+        	</td>
+        </tr>
+    </table>
+  </form> 
+  <script>
+      $(function () {
+        var socket = io();
+		var tempdata;
+        $('form').submit(function(){
+			tempdata =$('#m').val();
+			console.log(tempdata);
+			if (tempdata.substr(0,1) == 'X'){
+				var datasize = tempdata.length;
+				var maxt = datasize / 50;
+				if (datasize % 50 != 0)
+					maxt+=1;
+				tempdata=tempdata.substr(1);
+				for (var t=0;t<=maxt-1;t++){
+					socket.emit('remote', "X"+tempdata.substr(t*50,50)+"K");
+					for (var delay=0;delay<=3000;delay++){}
+				}
+				$('#m').val('');
+			}else{
+				socket.emit('remote', $('#m').val()); 
+    			$('#m').val('');
+			}
+		  tempdata="";
+          return false;
+        });
+        socket.on('remote', function(msg){
+			//*10122017184358,43,5,10,59,3,0,1,1,1,0,1,0,1,0,1,13,k,1,18,3,12,2,1,k,1,K   
+			if (msg.substr(0,1) == '%'){
+
+				// Delete previous eeprom table if exist
+				var totrows = document.getElementById("eepromtab").rows.length;
+				if ( totrows > 1){
+					var table = document.getElementById("eepromtab");
+					for(var i = table.rows.length - 1; i > 0; i--)
+					{
+						table. deleteRow(i);
+					}
+				}
+			
+				msg=msg.substr(1);
+
+				// Generate eeprom table
+				var cell=[];
+				var row;
+				var rowcount = 1;
+				var c = 0;
+				var wid = 0;
+				var dat;
+				
+				for (var y=0;y<=2100;y+=100){
+					row = document.getElementById("eepromtab").insertRow(rowcount);
+					cell[c] = row.insertCell(c);
+					if (rowcount > 1){
+						cell[c].innerHTML = y-100;
+						cell[c].className = "eepromtitles";
+					}
+					c++;
+					for (var x=0;x<=99;x++){
+						dat = x;
+						if (rowcount>1){
+							dat ="";
+							wid = msg.search(",");
+							dat = msg.substr(0,wid);
+							msg = msg.substr(wid+1);
+						
+						}
+						cell[c] = row.insertCell(c);
+						cell[c].innerHTML = dat;
+						if (rowcount == 1){
+							cell[c].className = "eepromtitles";
+						}else{
+							if (parseInt(dat) > 0){
+								cell[c].className = "eepromdatab";		
+							}else{
+								cell[c].className = "eepromdata";
+							}
+						}
+						c++;
+					}
+					rowcount++;
+					c=0;
+					
+				}
+				return;
+			}
+
+
+			if (msg.substr(0,1) == '*'){
+				document.getElementById("r_date").innerHTML = msg.substr(1,2)+"-"+msg.substr(3,2)+"-"+msg.substr(5,4);
+				document.getElementById("r_time").innerHTML = msg.substr(9,2)+":"+msg.substr(11,2);
+				var wid = 0;
+				var tempmsg = msg.substr(13);
+				var dat;
+				for (var x=1;x<=17;x++){
+					dat ="";
+					wid = tempmsg.search(",");
+					switch (x) {
+						case 1:
+							dat = tempmsg.substr(0,wid)+"c";
+							break;
+						case 2:
+							dat = tempmsg.substr(0,wid)+"c";
+							break;
+						case 3:
+							dat = tempmsg.substr(0,wid);
+							break;
+						case 4:
+							dat = tempmsg.substr(0,wid);
+							break;
+						case 5:
+							dat = tempmsg.substr(0,wid)+"m";
+							break;
+						case 6:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 1:
+									dat = .5;
+									break;
+								case 2:
+									dat = .6;
+									break;
+								case 3:
+									dat = .7;
+									break;
+								case 4:
+									dat = .8;
+									break;
+								case 5:
+									dat = .9;
+									break;
+								case 7:
+									dat = 1;
+									break;	
+								case 8:
+									dat = 1.1;
+									break;
+								case 9:
+									dat = 1.2;
+									break;									
+								case 10:
+									dat = 1.3;
+									break;
+								case 11:
+									dat = 1.4;
+									break;
+							}
+							break;
+						case 7:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Disabled";
+								case 1:
+									dat = "Enabled";
+							}
+							break;	
+						case 8:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Ashkenaz";
+								case 1:
+									dat = "Sepharad";
+							}
+							break;										
+						case 9:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Electric";
+								case 1:
+									dat = "Gas";
+							}
+							break;										
+						case 10:
+							dat = parseInt(tempmsg.substr(0,wid))
+							break;		
+						case 11:
+							dat = parseInt(tempmsg.substr(0,wid))
+							break;									
+						case 12:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Disabled";
+								case 1:
+									dat = "Enabled";
+							}
+							break;	
+						case 13:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Not defined";
+									break;
+								case 1:
+									dat = "40 Gallons";
+									break;
+								case 2:
+									dat = "50 Gallons";
+									break;
+								case 3:
+									dat = "60 Gallons";
+									break;
+								case 4:
+									dat = "80 Gallons";
+									break;
+								case 5:
+									dat = "100 Gallons";
+									break;
+								case 6:
+									dat = "120 Gallons";
+									break;	
+							}
+							break;							
+						case 14:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Disabled";
+									break;
+								case 1:
+									dat = "Enabled";
+									break;
+							}
+							break;	
+						case 15:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Disabled";
+									break;
+								case 1:
+									dat = "Enabled";
+									break;
+							}
+							break;	
+						case 16:
+							switch (parseInt(tempmsg.substr(0,wid))) {
+								case 0:
+									dat = "Disabled";
+									break;
+								case 1:
+									dat = "Enabled";
+									break;
+							}
+							break;						
+						case 17:
+							dat = tempmsg.substr(0,wid);
+							break;					
+					}		
+					
+					document.getElementById("r_para"+x).innerHTML = dat; 		
+					tempmsg = tempmsg.substr(wid+1);
+				}
+
+				tempmsg = tempmsg.substr(2);
+				for (var x=1;x<=6;x++){
+					dat ="";
+					wid = tempmsg.search(",");
+					switch (x) {
+						case 1:
+							dat = (tempmsg.substr(0,wid) == 0) ? "OFF" : "ON";
+							document.getElementById("r_val1").innerHTML = dat; 		
+							break;
+						case 2:
+							dat = tempmsg.substr(0,wid);
+							document.getElementById("r_val2").innerHTML = dat+":00 / "; 
+							break;
+						case 3:
+							dat = tempmsg.substr(0,wid);
+							document.getElementById("r_val2").innerHTML = document.getElementById("r_val2").innerHTML + dat+"h"; 
+							break;
+						case 4:
+							dat = (tempmsg.substr(0,wid) == 0) ? "OFF" : "ON";
+							document.getElementById("r_val3").innerHTML = dat; 		
+							break;
+						case 5:
+							dat = tempmsg.substr(0,wid);
+							document.getElementById("r_val4").innerHTML = dat+":00 / "; 
+							break;
+						case 6:
+							dat = tempmsg.substr(0,wid);
+							document.getElementById("r_val4").innerHTML = document.getElementById("r_val4").innerHTML + dat+"h"; 
+							break;
+					}
+					
+					tempmsg = tempmsg.substr(wid+1);
+				}
+				tempmsg = tempmsg.substr(2);					
+				switch (parseInt(tempmsg.substr(0,1))) {
+					case 0:
+						dat = "Disabled";
+						break;	
+					case 1:
+						dat = "Enabled";
+						break;	
+				}
+				document.getElementById("r_econo").innerHTML = dat; 		
+//*10122017184358,43,5,10,59,3,0,1,1,1,0,1,0,1,0,1,13,k,1,18,3,12,2,1,k,1,k
+				return;
+			}
+
+			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+			var before2 = document.getElementById('messages').value;
+			if ((before2.length) > 2000) before2 = before2.substr(1000,before2.length);  
+			document.getElementById('messages').value = before2+msg+"\r";
+        });
+		
+      });
+/*
+%0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0,0,0,0,0,0,1,2,3,4,5,60,43,2,10,59,1,0,1,2,3,1,0,0
+
+*/
+  </script>
+  </body>
+</html>
+
+
