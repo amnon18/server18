@@ -573,14 +573,15 @@
 						break;	
 				}
 				document.getElementById("r_econo").innerHTML = dat; 		
-//*10122017184358,43,5,10,59,3,0,1,1,1,0,1,0,1,0,1,13,k,1,18,3,12,2,1,k,1,k
 				return;
 			}
 
 			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
 			var before2 = document.getElementById('messages').value;
-			if ((before2.length) > 2000) before2 = before2.substr(1000,before2.length);  
+			if ((before2.length) > 7000) before2 = before2.substr(3500,before2.length);  
 			document.getElementById('messages').value = before2+msg+"\r";
+			
+	
         });
 		
       });
