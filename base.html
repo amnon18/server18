@@ -128,18 +128,84 @@
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td height="96" align="left" valign="top" bgcolor="#28a1d8" class="commands"><img src="http://www.amnon18.com/logobl.jpg" width="300" height="56" alt=""/></td>
-          <td width="247" valign="top" bgcolor="#28a1d8">&nbsp;</td>
-          <td width="867" align="right" valign="top" bgcolor="#28a1d8" class="title"><p>REMOTE APPLICATION CONSOLE</p>
+          <td colspan="2" valign="top" bgcolor="#28a1d8" class="title"><p>REMOTE APPLICATION CONSOLE</p>
           <p style="font-size: 12px">Version 1.0</p></td>
         </tr>
         <tr>
           <td height="8" class="bottomline"><p class="paratitles">REMOTE AMNON18 INFORMATION</p></td>
-          <td height="100%" colspan="2" rowspan="2" align="center" valign="top" bgcolor="#28a1d8" >
+          <td width="247" height="100%" rowspan="2" align="center" valign="top" bgcolor="#28a1d8" >
 	        <textarea cols="180" rows="40" id="messages"></textarea>
-              <span class="commands"> M=Complete  E=Read EEPROM o=Options d=Date t=Time v=Valet</span><br>
+	        <br>
 
 	    	  <input name="m" id="m" autofocus autocomplete="off"><button>SEND</button>
           </td>
+          <td width="867" height="100%" rowspan="2" align="center" valign="top" bgcolor="#28a1d8" ><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td colspan="2" align="center" class="paratitlesMAIN">Remote Commands</td>
+              </tr>
+              <tr>
+                <td width="11%" align="center" class="paratitles">M</td>
+                <td width="89%" class="commands">Pull remote data</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">D</td>
+                <td class="commands">Update Date</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">T</td>
+                <td class="commands">Update Time</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">E</td>
+                <td class="commands">Pull EEprom data</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">V</td>
+                <td class="commands">Update Valet</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">F</td>
+                <td class="commands">Update Econoflow</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">G</td>
+                <td class="commands">Run Diagnostics</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">l</td>
+                <td class="commands">Pull SD directory</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">y</td>
+                <td class="commands">Read a specific file</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">C</td>
+                <td class="commands">Copy file on SD</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">X</td>
+                <td class="commands">Update Holidays file</td>
+              </tr>
+              <tr>
+                <td height="15" align="center" class="paratitles">R</td>
+                <td class="commands">Remote Reset</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">O</td>
+                <td class="commands">Update Options</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">Z</td>
+                <td class="commands">Erase EEprom</td>
+              </tr>
+              <tr>
+                <td align="center" class="paratitles">N</td>
+                <td class="commands">Delete a specific file</td>
+              </tr>
+            </tbody>
+          </table></td>
         </tr>
         <tr>
           <td height="518" valign="top" bgcolor="#28a1d8"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
