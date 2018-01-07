@@ -41,13 +41,27 @@
     
   <script>
       $(function () {
-        var socket = io();
-        $('form').submit(function(){
+    	
+	    var socket = io();
+  		var login_id = Math.random();
+		login_id = login_id.toString().substr(2,4);
+		window.onload=A18login();
+		function A18login() {
+			socket.emit('little_newbie', login_id);
+		}
+		socket.on('disconnect', function () {
+			socket.emit('base', login_id);
+		    console.log('you have been disconnected');
+		});
+
+		$('form').submit(function(){
           socket.emit('base', $('#m').val());
           $('#m').val('');
           return false;
         });
-        socket.on('base', function(msg){
+		//         'base'
+
+        socket.on(login_id, function(msg){
 			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
 			var before2 = document.getElementById('messages').value;
 			if ((before2.length) > 2000) before2 = before2.substr(1000,before2.length);  
