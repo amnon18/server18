@@ -71,7 +71,7 @@ socket.on('new', function(username) {
 	io.emit('remote', socket.username+' joined remote service.');
 	numUsers++;
 	io.emit('remote', 'Number of clients online: '+numUsers);
-	
+	console.log(username);
 	clients[clientcount] =  username;
 	clientsession[clientcount] =  socket.id;
 	clientcount++;
