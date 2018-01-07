@@ -37,7 +37,8 @@ io.on('connection', function(socket){
 				io.emit('remote',  "Client ID: "+clients[x]+":"+clientsession[x]);
 			}
 		}else{
-	   		io.emit(ausr, msg);
+	   		io.emit('remote', msg);
+			io.emit(ausr, msg);
 		}
 	});
 });
