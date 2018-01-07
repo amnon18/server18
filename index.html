@@ -68,10 +68,12 @@
         });
 		
         socket.on(login_id, function(msg){
-			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-			var before2 = document.getElementById('messages').value;
-			if ((before2.length) > 2000) before2 = before2.substr(1000,before2.length);  
-			document.getElementById('messages').value = before2+msg+"\r";
+			if (msg.substr(0,1) != '$'){
+				document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+				var before2 = document.getElementById('messages').value;
+				if ((before2.length) > 2000) before2 = before2.substr(1000,before2.length);  
+				document.getElementById('messages').value = before2+msg+"\r";
+			}
         });
       });
       </script>
