@@ -48,7 +48,7 @@
 		document.onload=A18login();
 
 		function A18login() {
-			socket.emit('little_newbie', login_id);
+			socket.emit('new', login_id);
 		}
 
 		socket.on('disconnect', function () {
@@ -61,6 +61,7 @@
           $('#m').val('');
           return false;
         });
+		
         socket.on(login_id, function(msg){
 			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
 			var before2 = document.getElementById('messages').value;

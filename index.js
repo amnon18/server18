@@ -65,7 +65,7 @@ socket.on('disconnect', function () {
 	if (clientcount<0) clientcount=0;
 });
 
-socket.on('little_newbie', function(username) {
+socket.on('new', function(username) {
 	addedUser = true;
 	socket.username = username;
 	io.emit('remote', socket.username+' joined remote service.');
