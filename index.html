@@ -13,7 +13,7 @@
       #messages li:nth-child(odd) { background: #eee; }
       #messages { margin-bottom: 40px }
     .title {
-	color: #1086C8;
+	color: #1086C8;	
 	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
 	font-size: 20px;
 }
@@ -34,17 +34,6 @@
   <body>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <script>
-  		var socket = io();
-  		var login_id = Math.random();
-		login_id = login_id.toString().substr(2,4);
-
-		document.onload=A18login();
-
-		function A18login() {
-			socket.emit('new', login_id);
-		}
-</script>
   <form action="">
         <textarea cols="170" rows="40" id="messages"></textarea>
         <input id="m" autocomplete="off"><button>Send</button>
@@ -53,6 +42,15 @@
   <script>
       $(function () {
 	    
+		var socket = io();
+		var login_id = Math.random();
+		login_id = login_id.toString().substr(2,4);
+	
+		document.onload=A18login();
+
+		function A18login() {
+			socket.emit('new', login_id);
+		}
 		socket.on('disconnect', function () {
 			socket.emit('base', login_id);
 		    console.log('you have been disconnected');
@@ -62,6 +60,11 @@
           socket.emit('base', $('#m').val());
           $('#m').val('');
           return false;
+        });
+
+		socket.on('rid', function(msg){
+			if (login_id == '')
+				login_id = msg;
         });
 		
         socket.on(login_id, function(msg){
