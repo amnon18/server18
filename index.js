@@ -30,6 +30,7 @@ io.on('connection', function(socket){
 	socket.on('remote', function(msg){ 
 		if (msg.substr(0,2) == '$S'){
 			ausr = msg.substr(2,4);
+			return;
 		}
 		if (msg.substr(0,2) == '$L'){
 		    io.emit('remote', "Clients online: "+numUsers);
