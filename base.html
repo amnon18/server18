@@ -411,7 +411,7 @@
 				tempdata=tempdata.substr(1);
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
-				    delay(1000);
+				    // Mike this is where I need the delay. A delay of 1 Second is good. This is for communication backpressure
 				}
 				$('#m').val('');
 			}else{
