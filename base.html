@@ -123,6 +123,19 @@
   <body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.2.0/socket.io.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script type="text/javascript">
+    function delay(ms) {
+        var cur_d = new Date();
+        var cur_ticks = cur_d.getTime();
+        var ms_passed = 0;
+        while(ms_passed < ms) {
+            var d = new Date();  // Possible memory leak?
+            var ticks = d.getTime();
+            ms_passed = ticks - cur_ticks;
+            // d = null;  // Prevent memory leak?
+        }
+    }
+</script>
   <form action="">
   
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -398,7 +411,7 @@
 				tempdata=tempdata.substr(1);
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
-					setTimeout(socket.emit('base', "UPDATE!"),100000);
+				    delay(1000);
 				}
 				$('#m').val('');
 			}else{
