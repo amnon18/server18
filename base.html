@@ -398,8 +398,7 @@
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
 					socket.emit('base', "UPDATE!");
-					sleep(1000);
-				    //for (var delay=0;delay<=800000;delay++){}
+				    for (var delay=0;delay<=4800000;delay++){}
 				}
 				$('#m').val('');
 			}else{
@@ -409,15 +408,6 @@
 		  tempdata="";
           return false;
         });
-		
-		function sleep(milliseconds) {
-   	      var start = new Date().getTime();
-		  for (var i = 0; i < 1e7; i++) {
-			if ((new Date().getTime() - start) > milliseconds){
-			  break;
-			}
-		  }
-		}
 		
         socket.on('remote', function(msg){
 			//*10122017184358,43,5,10,59,3,0,1,1,1,0,1,0,1,0,1,13,k,1,18,3,12,2,1,k,1,K   
