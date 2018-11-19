@@ -398,8 +398,9 @@
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
 					socket.emit('base', "UPDATE!");
-					
-					for (var delay=0;delay<=40000;delay++){}
+					var waitTill = new Date(new Date().getTime() + seconds * 1000);
+					while(waitTill > new Date()){}
+					//for (var delay=0;delay<=40000;delay++){}
 				}
 				$('#m').val('');
 			}else{
