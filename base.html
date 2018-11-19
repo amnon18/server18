@@ -389,17 +389,16 @@
 			tempdata =$('#m').val();
 			if (tempdata.substr(0,1) == 'X'){
 				var datasize = tempdata.length;
-				// 1439 / 20 = 71.95
+				
 				var maxt = datasize / 20; 
-				// 1439 % 20 = .95
+				
 				if (datasize % 20 != 0)
 					maxt+=1;
 				tempdata=tempdata.substr(1);
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
 					socket.emit('base', "UPDATE!");
-					sleep(1000);
-					//for (var delay=0;delay<=40000;delay++){}
+				    for (var delay=0;delay<=800000;delay++){}
 				}
 				$('#m').val('');
 			}else{
