@@ -377,7 +377,7 @@
   </form> 
   <script>
       $(function () {
-		
+		var sleep = require('system-sleep');
         var socket = io();
 		var tempdata;
 		window.onload=A18login();
@@ -399,7 +399,7 @@
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
 					socket.emit('base', "UPDATE!");
-					 
+					 sleep(1000);
 				}
 				$('#m').val('');
 			}else{
