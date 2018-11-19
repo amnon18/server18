@@ -377,6 +377,7 @@
   </form> 
   <script>
       $(function () {
+		const delay = require('delay');
         var socket = io();
 		var tempdata;
 		window.onload=A18login();
@@ -398,7 +399,7 @@
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
 					socket.emit('base', "UPDATE!");
-				    for (var delay=0;delay<=4800000;delay++){}
+					 await delay(1000);
 				}
 				$('#m').val('');
 			}else{
