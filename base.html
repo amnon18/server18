@@ -398,7 +398,7 @@
 				tempdata=tempdata.substr(1);
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
-					setTimeout(socket.emit('base', "UPDATE!"),1000);
+					setTimeout(socket.emit('base', "UPDATE!"),100000);
 				}
 				$('#m').val('');
 			}else{
