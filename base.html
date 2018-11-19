@@ -389,12 +389,12 @@
 			tempdata =$('#m').val();
 			if (tempdata.substr(0,1) == 'X'){
 				var datasize = tempdata.length;
-				var maxt = datasize / 20;
-				if (datasize % 20 != 0)
+				var maxt = datasize / 50;
+				if (datasize % 50 != 0)
 					maxt+=1;
 				tempdata=tempdata.substr(1);
 				for (var t=0;t<=maxt-1;t++){
-					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
+					socket.emit('remote', "X"+tempdata.substr(t*50,50)+"K");
 					for (var delay=0;delay<=5000;delay++){}
 				}
 				$('#m').val('');
