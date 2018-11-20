@@ -13,9 +13,6 @@ var userNumber = 1;
 var ausr = ''; //Active user
 //************************************************
 
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
-});
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
@@ -121,3 +118,4 @@ socket.on('add user', function (username) {
 server.listen(port, function(){
   console.log('listening on *:' + port);
 });
+
