@@ -13,6 +13,10 @@ var userNumber = 1;
 var ausr = ''; //Active user
 //************************************************
 
+server.listen(port, function () {
+  console.log('Server listening at port %d', port);
+});
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
@@ -20,6 +24,28 @@ app.get('/', function(req, res){
 app.get('/base', function(req, res){
   res.sendFile(__dirname + '/base.html');
 });
+
+
+io.on('connection', function(socket){
+	socket.on('delayer', function(msg){ 
+		delay(100);
+		console.log('Sending...');
+		io.emit(ausr, msg);
+	});
+	
+});
+
+function delay(ms) {
+			var cur_d = new Date();
+			var cur_ticks = cur_d.getTime();
+			var ms_passed = 0;
+			while(ms_passed < ms) {
+				var d = new Date();  // Possible memory leak?
+				var ticks = d.getTime();
+				ms_passed = ticks - cur_ticks;
+				// d = null;  // Prevent memory leak?
+    	    }
+	    }
 
 
 io.on('connection', function(socket){
@@ -91,6 +117,7 @@ socket.on('add user', function (username) {
 	});
 });
 
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
+
+server.listen(port, function(){
+  console.log('listening on *:' + port);
 });

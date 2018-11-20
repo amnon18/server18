@@ -393,7 +393,11 @@
 		
         var socket = io();
 		var tempdata;
+		var whilek;
+		var t;
 		window.onload=A18login();
+		
+		whilek = '';
 		
 		function A18login() {
 			socket.emit('new', 182015);
@@ -407,15 +411,9 @@
 				if (datasize % 20 != 0)
 					maxt+=1;
 				tempdata=tempdata.substr(1);
-
-				for (var t=0;t<=maxt-1;t++){
-					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
-				    while(1){
-						socket.on('base', function(msg){
-						if (msg.substr(0,1) == 'k')
-							break;
-						});
-					}
+				for (t=0;t<=maxt-1;t++){
+					socket.emit('delayer', "X"+tempdata.substr(t*20,20)+"K");   //delayer = remote
+					console.log(t);
 				}
 
 				$('#m').val('');
@@ -426,7 +424,11 @@
 		  tempdata="";
           return false;
         });
+
 		
+
+
+				
         socket.on('remote', function(msg){
 			//*10122017184358,43,5,10,59,3,0,1,1,1,0,1,0,1,0,1,13,k,1,18,3,12,2,1,k,1,K   
 			if (msg.substr(0,1) == '%'){
