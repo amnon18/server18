@@ -407,12 +407,12 @@
 			tempdata =$('#m').val();
 			if (tempdata.substr(0,1) == 'X'){
 				var datasize = tempdata.length;
-				var maxt = datasize / 50; 
-				if (datasize % 50 != 0)
+				var maxt = datasize / 45; 
+				if (datasize % 45 != 0)
 					maxt+=1;
 				tempdata=tempdata.substr(1);
 				for (t=0;t<=maxt-1;t++){
-					socket.emit('delayer', "X"+tempdata.substr(t*50,50)+"K");   //delayer = remote
+					socket.emit('delayer', "X"+tempdata.substr(t*45,45)+"K");   //delayer = remote
 				}
 				$('#m').val('');
 			}else{
