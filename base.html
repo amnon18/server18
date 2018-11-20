@@ -403,16 +403,20 @@
 			tempdata =$('#m').val();
 			if (tempdata.substr(0,1) == 'X'){
 				var datasize = tempdata.length;
-				
 				var maxt = datasize / 20; 
-				
 				if (datasize % 20 != 0)
 					maxt+=1;
 				tempdata=tempdata.substr(1);
+
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
-				    // Mike this is where I need the delay. A delay of 1 Second is good. This is for communication backpressure
+				    while(){
+						socket.on('base', function(msg){
+						if (msg.substr(0,1) == 'k')
+							break;
+					}
 				}
+
 				$('#m').val('');
 			}else{
 				socket.emit('remote', $('#m').val()); 
