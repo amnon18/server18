@@ -25,7 +25,7 @@ app.get('/base', function(req, res){
 
 io.on('connection', function(socket){
 	socket.on('delayer', function(msg){ 
-		delay(100);
+		delay(500);
 		console.log('Sending...');
 		io.emit(ausr, msg);
 	});
