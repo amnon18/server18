@@ -410,10 +410,11 @@
 
 				for (var t=0;t<=maxt-1;t++){
 					socket.emit('remote', "X"+tempdata.substr(t*20,20)+"K");
-				    while(){
+				    while(1){
 						socket.on('base', function(msg){
 						if (msg.substr(0,1) == 'k')
 							break;
+						}
 					}
 				}
 
