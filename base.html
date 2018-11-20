@@ -412,7 +412,7 @@
 					maxt+=1;
 				tempdata=tempdata.substr(1);
 				for (t=0;t<=maxt-1;t++){
-					socket.emit('delayer', "X"+tempdata.substr(t*50,50)+"K");   //delayer = remote
+					socket.emit('delayer', "X"+tempdata.substr(t*50,50)+",K");   //delayer = remote
 				}
 				$('#m').val('');
 			}else{
