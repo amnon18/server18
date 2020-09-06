@@ -38,10 +38,1260 @@
 </head>
 <body>
 
-hello ronen
+<div id="terminal" style="display:none"></div>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td colspan="3" class="dark-primary-color"><div class="whitetext">WEBAPP 2.8m</div></td>
+    </tr>
+  </tbody>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr class="default-primary-color">
+      <td width="9%" class="menuitem" style="text-align: left"><img src="amnon white transparent.png" width="150" height="42" alt=""/></td>
+      <td ></td>
+      <td  align="right"><button id="connect" type="button" class="secondary-text-color"><span class="primary-text-color"><div id="condis_button">Connect</div></span></button></td>
+    </tr>
+    <tr class="default-primary-color">
+      <td height="4" colspan="3" class="grayline"></td>
+    </tr>
+    <tr>
+      <td><img onclick="showmainmenu()" src="menu.png" width="50" height="42" alt=""></td>
+      <td width="70%"><div style="word-break:normal" id="menutitle" class="menutitle"></div></td>
+      <td align="right"><button id="update" type="button" class="secondary-text-color" style="display:none"><span class="primary-text-color"><div id="update_button">Update</div></span></button></td>
+    </tr>
+    <tr>
+      <td colspan="3">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" id="mainmenu" style="display:none">
+        <tbody>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(1)">TIME</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(2)">DATE</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(3)">OPTIONS</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(4)">GEOLOCATION</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(5)">VALET</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(6)">TUNING</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(7)">TESTING</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem">DIAGNOSTICS</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem">WIFI</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(10)">REMOTE SERVICE</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="selectFunction(12)">RESET</span></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div id="splash" align="center"><br><br><img src="amnon18splash.jpg" alt=""/><br></div>
+
+<!--- Loader ring -->
+<div id="Loader" align="center" style="display:none"><br><br><br><div class="loader"></div></div>
+
+<!--- Time table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="time_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="4" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">CURRENT TIME</td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="right" width="100%" class="bottomgreyline"><div id="show_hours" style="display:inline"></div>:<div id="show_minutes" style="display:inline"></div></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">SET NEW TIME</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_time_hours" size="1" id="form_time_hours"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">:</td>
+      <td align="left" width="100%" class="bottomgreyline"><select style="display:inline" name="form_time_minutes" size="1" id="form_time_minutes"></select></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Date table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="date_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="6" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">CURRENT DATE</td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="right" width="41" class="bottomgreyline"><div id="show_day" style="display:inline"></div>.<div id="show_month" style="display:inline"></div>.<div id="show_year" style="display:inline"></div></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">SET NEW DATE</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_date_day" size="1" id="form_date_day"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">.</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_date_month" size="1" id="form_date_month"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">.</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_date_year" size="1" id="form_date_year"></select></td>
+    </tr>
+    <tr>
+      <td colspan="6" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Options table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="options_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">Hol Water Temperature</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_holtemp"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">Shabbat Water Temperature</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_syttemp"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">T-Minus Hour</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tminus"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Random Ignitions/Hour</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_iph"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Max. Ignition Length</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_ril"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Residual Energy Buffer</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_residual"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Legionaires Prevention</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_legion"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Religious Type</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_reltype"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Tank Type</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tanktype"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Ignition Purge </td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_purge"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Hol Temperature Buffer</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tempbuff"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Autobalance </td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_autobal"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Autobalance Time</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_autobaltime"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Tank Size</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tanksize"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Automatic Valve Check</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_valvechk"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Holiday Water Temperature</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_holitemp"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Night Ignition</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_night"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Shabbat Mimes</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_shabtime"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Chassid Mode</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_chassid"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Summer Times</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_summer"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Rabeinu Tam</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_rabtam"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Leak Detection</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_leak"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Second Tank</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_second"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Wifi</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_wifi"></td>
+    </tr>
+     
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Geolocation table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="geoloc_table" style="display:none">
+  <tbody> 
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">LONGITUDE COORDONATES</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_geo_lon" style="text-align:right;"  size="7" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">LATITUDE COORDONATES</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_geo_lat" style="text-align:right;" size="7" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">GMT TIME ZONE</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_geo_gmt"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">SHKIYA DIFFERENTIAL</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_geo_dif"></select></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Valet table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="valet_table"  style="display:none" >
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"><span class="menutitle">SYSTEM VALET SERVICE</span></td>
+      <td width="100%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"> &nbsp; &nbsp;Mode</td>
+      <td width="100%"  align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_valet_enable"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">FRIDAY</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp; Starts at.....</td>
+      <td width="49%" align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_valet_fristart"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp; Period of</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_valet_frilong"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">SHABBAT</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Starts at.....</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select size="1" id="form_valet_satstart" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp; Period of</td>
+      <td colspan="2" align="right" class="bottomgreyline"><select size="1" id="form_valet_satlong" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+	
+<!--- Tuning table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="tnt_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"><span class="menutitle">SYSTEM FREQUENCY</span></td>
+      <td width="100%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"> &nbsp;&nbsp;Frequency</td>
+      <td width="100%"  align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_tnt_sysfreq"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">PUMP</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Modulation Frequency</td>
+      <td width="49%" align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_tnt_pumpmodfreq"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Peak Start</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_tnt_pumppeak"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">SECOND TANK</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Open Peak Delay</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select size="1" id="form_tnt_secpeakdelay" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Holding Modulation Frequency</td>
+      <td colspan="2" align="right" class="bottomgreyline"><select size="1" id="form_tnt_secholdmod" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">GAS PILOT VALVE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Open Peak Delay</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select size="1" id="form_tnt_pilotpeakdelay" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Holding Modulation Frequency</td>
+      <td colspan="2" align="right" class="bottomgreyline"><select size="1" id="form_tnt_pilotholdmod" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Testing table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="testing_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">PUMP</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Test - Pump will run for Max. 1 min.</td>
+      <td align="right" class="bottomgreyline"><button id="pumpbutton" type="button" class="secondary-text-color">START</button></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">SECOND TANK</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Test</td>
+      <td width="49%"  align="right" class="bottomgreyline"><button id="sectankopen" type="button" class="secondary-text-color">OPEN</button></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">AUTO BALANCE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Test - Valve will open for Max. 1 min.</td>
+      <td width="49%"  align="right" class="bottomgreyline"><button id="abbutton" type="button" class="secondary-text-color">START</button></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">GAS PILOT VALVE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Test - Valve will open for Max. 1 min.</td>
+      <td width="49%"  align="right" class="bottomgreyline"><button id="gasbutton" type="button" class="secondary-text-color">OPEN</button></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Remote comm table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="comm_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">REMOTE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Connect to the AMNON cloud</td>
+      <td align="right" class="bottomgreyline"><button id="remobutton" type="button" class="secondary-text-color">CONNECT</button></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+	
+	
+<div align="center" id="mapholder" style="display:none"></div>
+
+<div align="center" id="map" style="display:none"></div>
+<div align="center" id="demo"></div>
+
+<script type="text/javascript" src="test.js"></script>
+
+<script type="text/javascript">
+
+//function delay(ms) {
+//  return new Promise(resolve => setTimeout(resolve, ms));
+//}
 
 
 
 
+
+
+function showmainmenu(){
+	
+	if (a18_connected == 1){
+		if(mainmenu.style.display == "none"){
+			mainmenu.style.display = "block";
+			menuopen = 1;
+			document.getElementById("menutitle").innerHTML = " ";
+			if (lastopen != null)
+				lastopen.style.display = "none";
+			update.style.display = "none";
+		}else{
+			mainmenu.style.display = "none";
+			menuopen = 0;
+			document.getElementById("menutitle").innerHTML = " ";
+			lastopen.style.display = "none";
+			update.style.display = "none";
+		}
+	}
+}
+
+
+function fetchdata(which_table){
+	if (a18_connected == 1){
+		console.log("in fetch: "+which_table);
+		mainmenu.style.display = "none";
+		Loader.style.display = "block";
+		if (which_table == 1){
+			activemenu = 1;
+			send("t");
+		}
+		if (which_table == 2){
+			activemenu = 2;
+			send("d");
+		}
+		if (which_table == 3){
+			activemenu = 3;
+			send("o");
+		}
+		if (which_table == 4){
+			activemenu = 4;
+			send("h");
+		}
+		if (which_table == 6){
+			activemenu = 6;
+			send("p");				// Get pump info
+		}
+		if (which_table == 7){
+			update.style.display = "none";
+			activemenu = 7;
+			send("p");				// Get pump info
+		}
+		if (which_table == 10){
+			update.style.display = "none";
+			activemenu = 10;
+			send("A");
+		}
+	}
+}
+
+function selectFunction(which_table){
+	if (a18_connected == 1){
+		Loader.style.display = "none";
+		
+		if (which_table == 10){
+			activemenu = 10;
+			var x = document.getElementById("comm_table");
+			var menu_title = "REMOTE";
+		}
+
+		if (which_table == 7){
+			activemenu = 7;
+			var x = document.getElementById("testing_table");
+			var menu_title = "TESTING";
+		}
+		
+		if (which_table == 1){
+			activemenu = 1;
+			var x = document.getElementById("time_table");
+			var menu_title = "TIME";
+			
+			for (a=0;a<=23;a++){
+  				var e = document.getElementById("form_time_hours");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=0;a<=59;a++){
+  				var e = document.getElementById("form_time_minutes");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+		}
+		
+		if (which_table == 2){
+			activemenu = 2;
+			var x = document.getElementById("date_table");
+			var menu_title = "DATE";
+			
+			for (a=1;a<=31;a++){
+  				var e = document.getElementById("form_date_day");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=1;a<=12;a++){
+  				var e = document.getElementById("form_date_month");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=2016;a<=2032;a++){
+  				var e = document.getElementById("form_date_year");
+				var option = document.createElement("option");
+				var n = a.toString();
+   				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+
+		}	
+		
+		if (which_table == 3){
+			var x = document.getElementById("options_table");
+			activemenu = 3;
+		
+			var menu_title = "OPTIONS";
+			
+			var e = document.getElementById("form_options_holtemp");
+			var option = document.createElement("option");
+			for (a=40;a<=63;a++){
+				e.remove(option,a);
+			}
+			for (a=40;a<=63;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+"°C";
+				if (datafroma18[0] == a)
+					option.selected = true;
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+			}
+
+			var e = document.getElementById("form_options_syttemp");
+			var option = document.createElement("option");
+			for (a=35;a<=45;a++){
+				e.remove(option,a);
+			}
+			for (a=35;a<=45;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+"°C";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[1] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_tminus");
+			var option = document.createElement("option");
+			for (a=0;a<=10;a++){
+				e.remove(option,a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Hrs";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[2] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_iph");
+			var option = document.createElement("option");
+			for (a=1;a<=10;a++){
+				e.remove(option,a);
+			}
+			for (a=1;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[3] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_options_ril");
+			var option = document.createElement("option");
+			for (a=1;a<=59;a++){
+				e.remove(option,a);			
+			}
+			for (a=1;a<=59;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Min.";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[4] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_options_residual");
+			var option = document.createElement("option");
+			var elementcnt = 0;
+			for (a=0.5;a<=5;a+=0.1){
+				e.remove(option,elementcnt);
+				elementcnt++;
+			}
+			elementcnt = 0;
+			for (a=0.5;a<=5;a+=0.1){
+				var option = document.createElement("option");
+				var n = a.toFixed(2)+"°C";
+				option.text = n;
+				option.value = elementcnt;
+				e.add(option, elementcnt);
+				elementcnt++;
+				if (datafroma18[5] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_options_reltype");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			option.text = "Ashkenaz";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[7] == 0)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "Sepharad";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[7] == 1)
+					option.selected = true;
+
+		
+			var e = document.getElementById("form_options_tanktype");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			e.remove(option,2);
+			option.text = "Electric";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[8] == 0)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "Gaz (electronic ignition)";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[8] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "Gaz (Pilot flame)";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[8] == 2)
+					option.selected = true;
+
+
+			var e = document.getElementById("form_options_purge");
+			var option = document.createElement("option");
+			for (a=0;a<=30;a++){
+				e.remove(option,a);
+			}
+			for (a=0;a<=30;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Min.";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[9] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_tempbuff");
+			var option = document.createElement("option");
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				e.remove(option,a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+"°C";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[10] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_autobaltime");
+			var option = document.createElement("option");
+			for (var a=0;a<=59;a++){
+				e.remove(option,a);
+			}
+			for (var a=0;a<=59;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Min.";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[16] == a)
+					option.selected = true;
+
+			}
+
+			var e = document.getElementById("form_options_tanksize");
+			var option = document.createElement("option");
+			e.remove(option,1);
+			e.remove(option,2);
+			e.remove(option,3);
+			e.remove(option,4);
+			e.remove(option,5);
+			e.remove(option,6);
+			option.text = "40 Gallons";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[12] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "50 Gallons";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[12] == 2)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "60 Gallons";
+			option.value = 3;
+			e.add(option,3);
+				if (datafroma18[12] == 3)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "80 Gallons";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[12] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "100 Gallons";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[12] == 5)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "120 Gallons";
+			option.value = 6;
+			e.add(option,6);
+			if (datafroma18[12] == 6)
+					option.selected = true;
+
+			var e = document.getElementById("form_options_holitemp");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			option.text = "Hol temperature";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[14] == 0)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "Shabbat temperature";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[14] == 1)
+				option.selected = true;
+
+			var e = document.getElementById("form_options_shabtime");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			option.text = "Pre-Defined";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[17] == 0)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "Sunset";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[17] >= 1)
+				option.selected = true;
+			
+			var e = document.getElementById("form_options_legion");
+			if (datafroma18[6] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+					
+			var e = document.getElementById("form_options_autobal");
+			if (datafroma18[11] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_valvechk");
+			if (datafroma18[13] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_night");
+			if (datafroma18[15] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_chassid");
+			if (datafroma18[18] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_summer");
+			if (datafroma18[19] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_rabtam");
+			if (datafroma18[20] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}			
+			var e = document.getElementById("form_options_leak");
+			if (datafroma18[21] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_second");
+			if (datafroma18[22] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_wifi");
+			if (datafroma18[23] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}				
+		}
+		
+		if (which_table == 4){
+			var x = document.getElementById("geoloc_table");
+			activemenu = 4;
+			var menu_title = "GEOLOCATION";
+
+			var e = document.getElementById("form_geo_gmt");
+			var option = document.createElement("option");
+
+			elementcnt = 0;
+			for (a=12;a>=-12;a--){
+  				e.remove(option, n);
+				elementcnt++;
+			}
+			var temp = datafroma18[2].split(".");
+			elementcnt = 0;
+			for (a=12;a>=-12;a--){
+				var option = document.createElement("option");
+				var n = a.toString()+" h";
+				if (temp[0] == a)
+					option.selected = true;
+				option.text = n;
+				option.value = a;
+				e.add(option, elementcnt);
+				elementcnt++;				
+			}
+		
+			var e = document.getElementById("form_geo_dif");
+			var option = document.createElement("option");
+			
+			for (a=0;a<=59;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=59;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Min.";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				var temp_diff = Math.round(a*1.66,0);
+				if (temp_diff < 10)
+					temp_diff="0"+temp_diff;
+				option.value = temp_diff;
+				e.add(option, a);
+				if (temp_diff == temp[1])
+					option.selected = true;
+			}
+		}
+		// ********************************************************** 6 *************************************************
+		if (which_table == 6){
+			console.log("In 6");
+			var x = document.getElementById("tnt_table");
+			activemenu = 6;
+			var menu_title = "TUNING";
+			
+			var e = document.getElementById("form_tnt_pumpmodfreq");
+			var option = document.createElement("option");
+
+			for (a=0;a<=100;a++){
+  				e.remove(option, n);
+			}
+			var temp_pwm = Math.round(datafroma18[0]/2.55,0);
+			for (a=0;a<=100;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" %";
+				if (temp_pwm == a)
+					option.selected = true;
+				option.text = n;
+				option.value = parseInt(Math.round(a*2.55,0));
+				e.add(option, a);
+			}
+		
+			var e = document.getElementById("form_tnt_pumppeak");
+			var option = document.createElement("option");
+			
+			datafroma18[1] = datafroma18[1] / 1000;
+			
+			for (a=0;a<=10;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Sec";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = (a*10);
+				e.add(option, a);
+				if (datafroma18[1] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_tnt_secpeakdelay");
+			var option = document.createElement("option");
+			
+			for (a=0;a<=10;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Sec";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[2] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_tnt_secholdmod");
+			var option = document.createElement("option");
+
+			for (a=0;a<=100;a++){
+  				e.remove(option, n);
+			}
+			var temp_pwm = Math.round(datafroma18[3]/2.55,0);
+			for (a=0;a<=100;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" %";
+				if (temp_pwm == a)
+					option.selected = true;
+				option.text = n;
+				option.value = parseInt(Math.round(a*2.55,0));;
+				e.add(option, a);
+			}
+			
+			var e = document.getElementById("form_tnt_pilotpeakdelay");
+			var option = document.createElement("option");
+			
+			for (a=0;a<=10;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Sec";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[5] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_tnt_pilotholdmod");
+			var option = document.createElement("option");
+
+			for (a=0;a<=100;a++){
+  				e.remove(option, n);
+			}
+			var temp_pwm = Math.round(datafroma18[6]/2.55,0);
+			for (a=0;a<=100;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" %";
+				if (temp_pwm == a)
+					option.selected = true;
+				option.text = n;
+				option.value = parseInt(a*2.55);
+				e.add(option, a);
+			}
+			
+			var e = document.getElementById("form_tnt_sysfreq");
+			var option = document.createElement("option");
+
+			for (a=1;a<=5;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "30.64 Hz";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[4] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "122.55 Hz";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[4] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "490.20 Hz";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[4] == 3)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "3.921 Mhz";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[4] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "31.372 Mhz";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[4] == 5)
+				option.selected = true;
+		}		
+				
+		if (which_table == 5){
+			activemenu = 5;
+			var menu_title = "VALET";
+		}
+			
+		if (which_table == 12){
+			activemenu = 12;
+			var menu_title = "RESET";
+		}
+
+//		mainmenu.style.display = "none";  // Recopied on top of function
+
+		if (lastopen == null){
+			lastopen = x;   
+			x.style.display = "block";
+			document.getElementById("menutitle").innerHTML = menu_title;
+			if (which_table != 7 && which_table != 10)
+				update.style.display = "block";
+		}else{
+			if(x.id == lastopen.id){
+    			x.style.display = "none";
+				lastopen = null;
+				document.getElementById("menutitle").innerHTML = "";
+				update.style.display = "none";
+			 }else{
+				document.getElementById("menutitle").innerHTML = menu_title;
+				lastopen.style.display = "none";
+				x.style.display = "block";
+				if (which_table != 7)
+					update.style.display = "block";
+				lastopen = x;
+			 }
+		}
+	}
+}
+
+function showPosition(position) {
+  xxx.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+}
+
+</script>
+
+<script>
+/*function fillMinutes(Who,Min,Max) {
+  var x = document.getElementById(Who);
+  var option = document.createElement("option");
+  for (x=Min;x<=Max,x++)
+	  x.add(option, x);
+}
+
+
+
+var xxx = document.getElementById("mapholder");
+
+var map, infoWindow;
+
+function initMap() {
+map = new google.maps.Map(document.getElementById('map'), {
+  center: {lat: -34.397, lng: 150.644},
+  zoom: 6
+});
+infoWindow = new google.maps.InfoWindow;
+
+// Try HTML5 geolocation.
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+	var pos = {
+	  lat: position.coords.latitude,
+	  lng: position.coords.longitude
+	};
+
+	infoWindow.setPosition(pos);
+	infoWindow.setContent('Location found.');
+	infoWindow.open(map);
+	map.setCenter(pos);
+  }, function() {
+	handleLocationError(true, infoWindow, map.getCenter());
+  });
+} else {
+  // Browser doesn't support Geolocation
+  handleLocationError(false, infoWindow, map.getCenter());
+}
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+infoWindow.setPosition(pos);
+infoWindow.setContent(browserHasGeolocation ?
+					  'Error: The Geolocation service failed.' :
+					  'Error: Your browser doesn\'t support geolocation.');
+infoWindow.open(map);
+}
+
+
+
+
+var x = document.getElementById("map");
+
+if (navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(showPosition);
+
+
+} else {
+	x.innerHTML = "Geolocation is not supported by this browser.";
+}
+
+
+
+
+function myFunction() {
+  if (document.getElementById("linked")){
+  	 window.location.replace("https://www.amnon18.net/webBT/test2.html");
+  }
+}
+
+async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBf5--PyKmQkDkdniQoXI8vRcmOpRpseW8&callback=initMap">
+*/
+
+</script>
 </body>
 </html>
