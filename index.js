@@ -22,6 +22,9 @@ app.get('/base', function(req, res){
   res.sendFile(__dirname + '/base.html');
 });
 
+app.get('/app', function(req, res){
+  res.sendFile(__dirname + '/webapp.htm');
+});
 
 io.on('connection', function(socket){
 	socket.on('delayer', function(msg){ 
