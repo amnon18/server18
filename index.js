@@ -23,7 +23,7 @@ app.get('/base', function(req, res){
 });
 
 app.get('/app', function(req, res){
-  res.sendFile(__dirname + '/webapp.htm');
+  res.sendFile(__dirname + '/webapp.html');
 });
 
 io.on('connection', function(socket){
