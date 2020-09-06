@@ -1,7 +1,6 @@
 var app = require('express')();
 var server = require('http').createServer(app);    //var http = require('http').Server(app);
 var io = require('socket.io')(server);             //var io = require('socket.io')(http);
-//var cors = require('cors');
 var port = process.env.PORT || 4000;
 
 //************************************************
@@ -14,6 +13,11 @@ var userNumber = 1;
 var ausr = ''; //Active user
 //************************************************
 
+app.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+  });
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
