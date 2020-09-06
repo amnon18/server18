@@ -1,7 +1,7 @@
 var app = require('express')();
 var server = require('http').createServer(app);    //var http = require('http').Server(app);
 var io = require('socket.io')(server);             //var io = require('socket.io')(http);
-//var cors = require('cors');
+var cors = require('cors');
 var port = process.env.PORT || 4000;
 
 //************************************************
