@@ -13,6 +13,16 @@ var userNumber = 1;
 var ausr = ''; //Active user
 //************************************************
 
+// Allow access control for web requests
+
+app.use(function(req, res, next) {
+ res.header("Access-Control-Allow-Origin", "*");
+res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+next();
+});
+
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
@@ -113,16 +123,6 @@ socket.on('add user', function (username) {
 	io.emit('remote', 'Customer joined remote com.');
 	 ++numUsers;
 	});
-});
-
-// Allow access control for web requests
-
-app.use(function(req, res, next) {
- res.header("Access-Control-Allow-Origin", "*");
-res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-next();
 });
 
 
