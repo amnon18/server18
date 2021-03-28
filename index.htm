@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<style>
+
+    .loader {
+	border: 16px solid #F44336; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+	align-content: center;
+
+		}
+
+		@keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}
+		
+	.loaderdone {
+	border: 16px solid #000000; /* Light grey */
+	border-top: 16px solid #F44336; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin .5s linear infinite;
+	align-content: center;
+
+		}
+
+		@keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}
+	
+	#map {
+		height: 250px;
+		width: 100%;
+	}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="test.css" rel="stylesheet">
+<link href="palette.css" rel="stylesheet" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.2.0/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+
+
+</head>
+<body>
+
+<div id="terminal" style="display:none"></div>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td colspan="3" class="dark-primary-color"><div class="whitetext">WEBAPP 2.8m</div></td>
+    </tr>
+  </tbody>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr class="default-primary-color">
+      <td width="9%" class="menuitem" style="text-align: left"><img onClick="secretButton()" src="amnon white transparent.png" width="150" height="42" alt="" id="secret"/></td>
+      <td ></td>
+      <td  align="right"><button id="connect" type="button" class="secondary-text-color"><span class="primary-text-color"><div id="condis_button">Connect</div></span></button></td>
+    </tr>
+    <tr class="default-primary-color">
+      <td height="4" colspan="3" class="grayline"></td>
+    </tr>
+    <tr>
+      <td><img onclick="showmainmenu()" src="menu.png" width="50" height="42" alt=""></td>
+      <td width="70%"><div style="word-break:normal" id="menutitle" class="menutitle"></div></td>
+      <td align="right"><button id="update" type="button" class="secondary-text-color" style="display:none"><span class="primary-text-color"><div id="update_button">Update</div></span></button></td>
+    </tr>
+    <tr>
+      <td colspan="3">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" id="mainmenu" style="display:none">
+        <tbody>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(1)">TIME</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(2)">DATE</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(3)">OPTIONS</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(5)">VALET</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(4)">GEOLOCATION</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(8)">DAYLIGHT SAVING</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(9)">INLET WATER &deg;C</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(15)">JEWISH HOLIDAY DATES</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(6)">TUNING</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(7)">TESTING</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(10)">REMOTE SERVICE</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(12)">USAGE LOGS</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(13)">REGISTER SYSTEM</span></td>
+          </tr>
+          <tr>
+            <td><span class="menuitem" onclick="fetchdata(14)">ACTIVATE SYSTEM</span></td>
+          </tr>
+        </tbody>
+      </table></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div id="splash" align="center"><br><br><img src="amnon18splash.jpg" alt=""/><br></div>
+
+<!--- Loader ring -->
+<div id="Loader" align="center" style="display:none"><br><br><br><div class="loader"></div></div>
+
+<!--- Loader2 ring -->
+<div id="Loaderdone" align="center" style="display:none"><br><br><br><div class="loaderdone"></div><div class="menutitle" id="Loadertxt2"></div></div>
+
+
+<!--- Time table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="time_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="4" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">CURRENT TIME</td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="right" width="100%" class="bottomgreyline"><div id="show_hours" style="display:inline"></div>:<div id="show_minutes" style="display:inline"></div></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">SET NEW TIME</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_time_hours" size="1" id="form_time_hours"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">:</td>
+      <td align="left" width="100%" class="bottomgreyline"><select style="display:inline" name="form_time_minutes" size="1" id="form_time_minutes"></select></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Date table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="date_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="6" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">CURRENT DATE</td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="left" width="100%" class="bottomgreyline"></td>
+      <td align="right" width="41" class="bottomgreyline"><div id="show_day" style="display:inline"></div>.<div id="show_month" style="display:inline"></div>.<div id="show_year" style="display:inline"></div></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">SET NEW DATE</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_date_day" size="1" id="form_date_day"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">.</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_date_month" size="1" id="form_date_month"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">.</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" name="form_date_year" size="1" id="form_date_year"></select></td>
+    </tr>
+    <tr>
+      <td colspan="6" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Options table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="options_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">Hol Water Temperature</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_holtemp"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline">Shabbat Water Temperature</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_syttemp"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">T-Minus Hour</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tminus"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Random Ignitions/Hour</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_iph"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Max. Ignition Length</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_ril"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Residual Energy Buffer</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_residual"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Legionaires Prevention</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_legion"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Religious Type</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_reltype"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Tank Type</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tanktype"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Ignition Purge </td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_purge"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Hol Temperature Buffer</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tempbuff"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Autobalance </td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_autobal"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Autobalance Time</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_autobaltime"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Tank Size</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_tanksize"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Automatic Valve Check</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_valvechk"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Holiday Water Temperature</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_holitemp"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Night Ignition</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_night"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Shabbat Times</td>
+      <td align="right" width="49%" class="bottomgreyline"><select style="display:inline" size="1" id="form_options_shabtime"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Chassid Mode</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_chassid"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Summer Times</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_summer"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Rabeinu Tam</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_rabtam"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Leak Detection</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_leak"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Second Tank</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_second"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">Wifi</td>
+      <td align="right" width="49%" class="bottomgreyline"><input type="checkbox" id="form_options_wifi"></td>
+    </tr>
+     
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Geolocation table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="geoloc_table" style="display:none">
+  <tbody> 
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">LONGITUDE COORDONATES</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_geo_lon" style="text-align:right;"  size="7" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">LATITUDE COORDONATES</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_geo_lat" style="text-align:right;" size="7" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">GMT TIME ZONE</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_geo_gmt"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">SHKIYA DIFFERENTIAL</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_geo_dif"></select></td>
+    </tr>
+     <tr>
+      <td align="left"  width="100%" class="bottomgreyline">DAYLIGHT SAVING</td>
+      <td align="right" width="100%" class="bottomgreyline"><input type="checkbox" style="display:inline" id="form_geo_day"></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Daylight saving -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="daylight_table" style="display:none">
+  <tbody> 
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+	<tr>
+      <td align="left" width="100%" class="bottomgreyline"><span class="menutitle">WINTER SETTING</span></td>
+      <td width="100%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Instance of the day</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_seq_win"></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Day</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_day_win" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Month</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_mon_win"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Hour of change</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_chg_win"></select></td>
+    </tr>
+     <tr>
+      <td align="left"  width="100%" class="bottomgreyline">DST +1</td>
+      <td align="right" width="100%" class="bottomgreyline"><input type="checkbox" style="display:inline" id="form_hrp_win"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"><span class="menutitle">SUMMER SETTING</span></td>
+      <td width="100%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Instance of the day</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_seq_sum" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Day</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_day_sum"></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Month</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_mon_sum"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">Hour of change</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_chg_sum"></select></td>
+    </tr>
+     <tr>
+      <td align="left"  width="100%" class="bottomgreyline">DST +1</td>
+      <td align="right" width="100%" class="bottomgreyline"><input type="checkbox" style="display:inline" id="form_hrp_sum"></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Water temperature -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="water_table"  style="display:none">
+  <tbody> 
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+	    <tr>
+      <td colspan = "2" align="left"  width="100%" class="bottomgreyline">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" id="watersel_table">
+  <tbody>
+    <tr>
+      <td>&nbsp;</td>
+      <td align="center" colspan="17" class="months" >WATER TEMPERATURE in &deg;C</td>
+      </tr>
+    <tr>
+      <td width="13%">&nbsp;</td>
+      <td width="4%" class="months" style="text-align: center" >2</td>
+      <td width="4%" class="months" style="text-align: center">3</td>
+      <td width="4%" class="months" style="text-align: center">4</td>
+      <td width="4%" class="months" style="text-align: center">5</td>
+      <td width="4%" class="months" style="text-align: center">6</td>
+      <td width="4%" class="months" style="text-align: center">7</td>
+      <td width="4%" class="months" style="text-align: center">8</td>
+      <td width="4%" class="months" style="text-align: center">9</td>
+      <td width="4%" class="months" style="text-align: center">10</td>
+      <td width="4%" class="months" style="text-align: center">11</td>
+      <td width="4%" class="months" style="text-align: center">12</td>
+      <td width="4%" class="months" style="text-align: center">13</td>
+      <td width="4%" class="months" style="text-align: center">14</td>
+      <td width="4%" class="months" style="text-align: center">15</td>
+      <td width="4%" class="months" style="text-align: center">16</td>
+      <td width="4%" class="months" style="text-align: center">17</td>
+      <td width="4%" class="months" style="text-align: center">18</td>
+      </tr>
+    <tr>
+      <td class="months">Jan&nbsp;</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="2" id="wt_1"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="3" id="wt_2"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="4" id="wt_3"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="5" id="wt_4"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="6" id="wt_5"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="7" id="wt_6"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="8" id="wt_7"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="9" id="wt_8"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="10" id="wt_9"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="11" id="wt_10"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="12" id="wt_11"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="13" id="wt_12"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="14" id="wt_13"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="15" id="wt_14"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="16" id="wt_15"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="17" id="wt_16"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jantemp" value="18" id="wt_17"></td>
+      </tr>
+    <tr>
+      <td class="months">Feb</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="2" id="wt_18"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="3" id="wt_19"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="4" id="wt_20"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="5" id="wt_21"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="6" id="wt_22"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="7" id="wt_23"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="8" id="wt_24"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="9" id="wt_25"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="10" id="wt_26"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="11" id="wt_27"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="12" id="wt_28"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="13" id="wt_29"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="14" id="wt_30"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="15" id="wt_31"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="16" id="wt_32"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="17" id="wt_33"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Febtemp" value="18" id="wt_34"></td>
+      </tr>
+    <tr>
+      <td class="months">Mar</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="2" id="wt_35"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="3" id="wt_36"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="4" id="wt_37"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="5" id="wt_38"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="6" id="wt_39"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="7" id="wt_40"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="8" id="wt_41"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="9" id="wt_42"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="10" id="wt_43"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="11" id="wt_44"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="12" id="wt_45"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="13" id="wt_46"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="14" id="wt_47"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="15" id="wt_48"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="16" id="wt_49"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="17" id="wt_50"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Martemp" value="18" id="wt_51"></td>
+      </tr>
+    <tr>
+      <td class="months">Apr</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="2" id="wt_52"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="3" id="wt_53"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="4" id="wt_54"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="5" id="wt_55"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="6" id="wt_56"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="7" id="wt_57"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="8" id="wt_58"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="9" id="wt_59"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="10" id="wt_60"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="11" id="wt_61"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="12" id="wt_62"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="13" id="wt_63"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="14" id="wt_64"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="15" id="wt_65"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="16" id="wt_66"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="17" id="wt_67"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Aprtemp" value="18" id="wt_68"></td>
+      </tr>
+    <tr>
+      <td class="months">May</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="2" id="wt_69"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="3" id="wt_70"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="4" id="wt_71"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="5" id="wt_72"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="6" id="wt_73"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="7" id="wt_74"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="8" id="wt_75"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="9" id="wt_76"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="10" id="wt_77"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="11" id="wt_78"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="12" id="wt_79"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="13" id="wt_80"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="14" id="wt_81"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="15" id="wt_82"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="16" id="wt_83"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="17" id="wt_84"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Maytemp" value="18" id="wt_85"></td>
+      </tr>
+    <tr>
+      <td class="months">Jun</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="2" id="wt_86"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="3" id="wt_87"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="4" id="wt_88"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="5" id="wt_89"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="6" id="wt_90"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="7" id="wt_91"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="8" id="wt_92"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="9" id="wt_93"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="10" id="wt_94"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="11" id="wt_95"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="12" id="wt_96"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="13" id="wt_97"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="14" id="wt_98"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="15" id="wt_99"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="16" id="wt_100"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="17" id="wt_101"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Juntemp" value="18" id="wt_102"></td>
+      </tr>
+    <tr>
+      <td class="months">Jul</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="2" id="wt_103"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="3" id="wt_104"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="4" id="wt_105"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="5" id="wt_106"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="6" id="wt_107"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="7" id="wt_108"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="8" id="wt_109"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="9" id="wt_110"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="10" id="wt_111"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="11" id="wt_112"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="12" id="wt_113"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="13" id="wt_114"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="14" id="wt_115"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="15" id="wt_116"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="16" id="wt_117"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="17" id="wt_118"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Jultemp" value="18" id="wt_119"></td>
+      </tr>
+    <tr>
+      <td class="months">Aug</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="2" id="wt_120"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="3" id="wt_121"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="4" id="wt_122"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="5" id="wt_123"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="6" id="wt_124"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="7" id="wt_125"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="8" id="wt_126"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="9" id="wt_127"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="10" id="wt_128"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="11" id="wt_129"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="12" id="wt_130"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="13" id="wt_131"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="14" id="wt_132"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="15" id="wt_133"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="16" id="wt_134"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="17" id="wt_135"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Augtemp" value="18" id="wt_136"></td>
+      </tr>
+    <tr>
+      <td class="months">Sep</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="2" id="wt_137"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="3" id="wt_138"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="4" id="wt_139"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="5" id="wt_140"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="6" id="wt_141"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="7" id="wt_142"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="8" id="wt_143"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="9" id="wt_144"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="10" id="wt_145"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="11" id="wt_146"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="12" id="wt_147"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="13" id="wt_148"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="14" id="wt_149"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="15" id="wt_150"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="16" id="wt_151"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="17" id="wt_152"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Septemp" value="18" id="wt_153"></td>
+      </tr>
+    <tr>
+      <td class="months">Oct</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="2" id="wt_154"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="3" id="wt_155"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="4" id="wt_156"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="5" id="wt_157"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="6" id="wt_158"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="7" id="wt_159"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="8" id="wt_160"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="9" id="wt_161"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="10" id="wt_162"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="11" id="wt_163"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="12" id="wt_164"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="13" id="wt_165"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="14" id="wt_166"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="15" id="wt_167"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="16" id="wt_168"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="17" id="wt_169"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Octtemp" value="18" id="wt_170"></td>
+      </tr>
+    <tr>
+      <td class="months">Nov</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="2" id="wt_171"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="3" id="wt_172"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="4" id="wt_173"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="5" id="wt_174"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="6" id="wt_175"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="7" id="wt_176"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="8" id="wt_177"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="9" id="wt_178"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="10" id="wt_179"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="11" id="wt_180"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="12" id="wt_181"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="13" id="wt_182"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="14" id="wt_183"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="15" id="wt_184"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="16" id="wt_185"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="17" id="wt_186"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Novtemp" value="18" id="wt_187"></td>
+      </tr>
+    <tr>
+      <td class="months">Dec</td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="2" id="wt_188"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="3" id="wt_189"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="4" id="wt_190"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="5" id="wt_191"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="6" id="wt_192"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="7" id="wt_193"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="8" id="wt_194"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="9" id="wt_195"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="10" id="wt_196"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="11" id="wt_197"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="12" id="wt_198"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="13" id="wt_199"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="14" id="wt_200"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="15" id="wt_201"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="16" id="wt_202"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="17" id="wt_203"></td>
+      <td class="months" style="text-align: center"><input type="radio" name="Dectemp" value="18" id="wt_204"></td>
+      </tr>
+    </tbody>
+	</table>
+      </td>
+
+    </tr>
+    
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Valet table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="valet_table"  style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"><span class="menutitle">SYSTEM VALET SERVICE</span></td>
+      <td width="100%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">FRIDAY</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"> &nbsp; &nbsp;Enabled</td>
+      <td width="100%"  align="right" class="bottomgreyline"><input type="checkbox" id="form_valetf_enable"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp; Starts at.....</td>
+      <td width="49%" align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_valet_fristart"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp; Period of</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_valet_frilong"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">SHABBAT</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"> &nbsp; &nbsp;Enabled</td>
+      <td width="100%"  align="right" class="bottomgreyline"><input type="checkbox" id="form_valets_enable"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Starts at.....</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select size="1" id="form_valet_satstart" style="display:inline"></select></td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp; Period of</td>
+      <td colspan="2" align="right" class="bottomgreyline"><select size="1" id="form_valet_satlong" style="display:inline"></select></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+	
+<!--- Tuning table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="tnt_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"><span class="menutitle">SYSTEM FREQUENCY</span></td>
+      <td width="100%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="100%" class="bottomgreyline"> &nbsp;&nbsp;Frequency</td>
+      <td width="100%"  align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_tnt_sysfreq"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">PUMP</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Modulation Frequency</td>
+      <td width="49%" align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_tnt_pumpmodfreq"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Peak Start</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select style="display:inline" size="1" id="form_tnt_pumppeak"></select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">SECOND TANK</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Open Peak Delay</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select size="1" id="form_tnt_secpeakdelay" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Holding Modulation Frequency</td>
+      <td colspan="2" align="right" class="bottomgreyline"><select size="1" id="form_tnt_secholdmod" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">GAS PILOT VALVE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Open Peak Delay</td>
+      <td width="49%"  align="right" class="bottomgreyline"><select size="1" id="form_tnt_pilotpeakdelay" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Holding Modulation Frequency</td>
+      <td colspan="2" align="right" class="bottomgreyline"><select size="1" id="form_tnt_pilotholdmod" style="display:inline">
+      </select></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Testing table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="testing_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">PUMP</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Test - Pump will run for Max. 1 min.</td>
+      <td align="right" class="bottomgreyline"><button id="pumpbutton" type="button" class="secondary-text-color">START</button></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">SECOND TANK</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Test</td>
+      <td width="49%"  align="right" class="bottomgreyline"><button id="sectankopen" type="button" class="secondary-text-color">OPEN</button></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">AUTO BALANCE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Test - Valve will open for Max. 1 min.</td>
+      <td width="49%"  align="right" class="bottomgreyline"><button id="abbutton" type="button" class="secondary-text-color">START</button></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">GAS PILOT VALVE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline">&nbsp;&nbsp;Test - Valve will open for Max. 1 min.</td>
+      <td width="49%"  align="right" class="bottomgreyline"><button id="gasbutton" type="button" class="secondary-text-color">OPEN</button></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Remote comm table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="comm_table" style="display:none">
+  <tbody>
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" width="51%" class="bottomgreyline"><span class="menutitle">REMOTE</span></td>
+      <td width="49%"  align="right" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left" class="bottomgreyline">&nbsp;&nbsp;Connect to the AMNON cloud</td>
+      <td align="right" class="bottomgreyline"><button id="remobutton" type="button" class="secondary-text-color">CONNECT</button></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Log comm table  -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="display:none" id="log_table" >
+  <tbody>
+    <tr>
+      <td height="2" colspan="6" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">SELECT LOG DATE</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_log_day"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">.</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_log_month"></select></td>
+      <td align="right" width="100%" class="bottomgreyline">.</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline"  size="1" id="form_log_year"></select></td>
+    </tr>
+    <tr>															
+      <td colspan="6" align="right" class="bottomgreyline"><div id="logtitles" style="display:block">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="logtitlestbl">
+          <tbody>
+            <tr>
+              <td width="10%" class="primary-text-color-minileft">Date</td>
+              <td width="10%" class="primary-text-color-miniright">Time</td>
+              <td width="10%" class="primary-text-color-miniright">Temp</td>
+              <td width="10%" class="primary-text-color-miniright">Max</td>
+              <td width="10%" class="primary-text-color-miniright">Flow</td>
+              <td width="10%" class="primary-text-color-minicenter">Heat</td>
+              <td width="10%" class="primary-text-color-minicenter">Valve</td>
+              <td width="10%" class="primary-text-color-minicenter">A/B</td>
+              <td width="10%" class="primary-text-color-minicenter">2ndT</td>
+              </tr>
+          </tbody>
+        </table>
+      </div></td>
+    </tr>
+    <tr>															
+      <td colspan="6" align="right" class="bottomgreyline"><div id="logcontent" style="display:block">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="logitems">
+          <tbody>
+            <tr>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="10%" class="primary-text-color-mini">&nbsp;</td>
+              </tr>
+          </tbody>
+        </table>
+      </div></td>
+    </tr>
+    <tr>
+      <td colspan="6" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Holiday dates   -->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="display:none" id="dates_table" >
+  <tbody>
+    <tr>
+      <td height="2" colspan="5" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left" colspan="5" width="100%" class="bottomgreyline">UPDATE JEWISH HOLIDAY DATES</td>
+    </tr>
+    <tr>															
+      <td colspan="5" align="right" class="bottomgreyline"><div id="logtitles" style="display:block">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="holidaystbl">
+          <tbody>
+            <tr>
+              <td width="20%" class="primary-text-color-minileft">Year</td>
+              <td width="20%" class="primary-text-color-miniright">Year</td>
+              <td width="20%" class="primary-text-color-miniright">Year</td>
+              <td width="20%" class="primary-text-color-miniright">Year</td>
+              <td width="20%" class="primary-text-color-miniright">Year</td>
+              </tr>
+          </tbody>
+        </table>
+      </div></td>
+    </tr>
+    <tr>															
+      <td colspan="5" align="right" class="bottomgreyline"><div id="logcontent" style="display:block">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="holidayitems">
+          <tbody>
+            <tr>
+              <td width="20%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="20%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="20%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="20%" class="primary-text-color-mini">&nbsp;</td>
+              <td width="20%" class="primary-text-color-mini">&nbsp;</td>
+
+              </tr>
+          </tbody>
+        </table>
+      </div></td>
+    </tr>
+    <tr>
+      <td colspan="5" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!--- Activation table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="active_table" style="display:none">
+  <tbody> 
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">CLIENT TEL. NUMBER</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_act_num" style="text-align:right;"  size="10" ></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+
+<!--- Registration table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="regis_table" style="display:none">
+  <tbody> 
+    <tr>
+      <td height="2" colspan="2" class="bottomgreyline"></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">CLIENT INFO</td>
+      <td align="right" width="100%" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Email</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_eml" style="text-align:left;" size="25" ></td>
+    </tr>
+     <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Telephone number</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_tel" style="text-align:left;" size="15" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Salutation</td>
+      <td align="right" width="100%" class="bottomgreyline"><select name="form_reg_sal" size="1" id="form_reg_sal" style="display:inline"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;First name</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_fst" style="text-align:right;" size="15" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Last name</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_lst" style="text-align:right;" size="15" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Address</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_ads" style="text-align:right;" size="25" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;City</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_city" style="text-align:right;" size="20" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;State/Province</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_prov" style="text-align:right;" size="2" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Zip/PC</td>
+      <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_zip" style="text-align:right;" size="6" ></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Country</td>
+      <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_cun"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">INSTALLATION INFO</td>
+      <td align="right" width="100%" class="bottomgreyline">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Nb. tanks</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_nbt"></select></td>
+    </tr>
+ 	<tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Pipe size</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_psz"></select></td>
+    </tr>
+ 	<tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Connection type</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_pty"></select></td>
+    </tr>
+  	<tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Heating source</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_hsc"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Second tank module</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_stm"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Serial flow module</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_sfm"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Gas pilot module</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><select style="display:inline" size="1" id="form_reg_gpm"></select></td>
+    </tr>
+    <tr>
+      <td align="left"  width="100%" class="bottomgreyline">&nbsp;Home dwellings</td>
+ 	  <td align="right" width="100%" class="bottomgreyline"><input id="form_reg_zip" style="text-align:right;" size="6" ></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="accent-color" height="5"></td>
+    </tr>
+  </tbody>
+</table>
+	
+<div align="center" id="mapholder" style="display:none"></div>
+
+<div align="center" id="map" style="display:none"></div>
+
+<div align="center" id="demo"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="test.js"></script>
+
+<script type="text/javascript">
+
+function showmainmenu(){
+	
+	if (a18_connected == 1){
+		document.getElementById("update_button").innerHTML = "Update";		
+		if(mainmenu.style.display == "none"){
+			mainmenu.style.display = "block";
+			menuopen = 1;
+			document.getElementById("menutitle").innerHTML = " ";
+			if (lastopen != null)
+				lastopen.style.display = "none";
+			update.style.display = "none";
+		}else{
+			mainmenu.style.display = "none";
+			menuopen = 0;
+			document.getElementById("menutitle").innerHTML = " ";
+			lastopen.style.display = "none";
+			update.style.display = "none";
+		}
+	}
+}
+
+
+function fetchdata(which_table){
+	if (a18_connected == 1){
+ 		mainmenu.style.display = "none";			// Remove main menu from screen
+		Loader.style.display = "block";				// Show loader wheel on screen
+		if (which_table == 1){
+			activemenu = 1;							// Set Menu ID to activemenu
+			send("t");								// Send BT command to AMNON18 to fetch parameters
+		}
+		if (which_table == 2){
+			activemenu = 2;
+			send("d");
+		}
+		if (which_table == 3){
+			activemenu = 3;
+			send("o");
+		}
+		if (which_table == 4){
+			activemenu = 4;
+			send("h");
+		}
+		if (which_table == 5){
+			activemenu = 5; 
+			send("v");
+		}
+		if (which_table == 6){
+			activemenu = 6;
+			send("p");								// Get pump info
+		}
+		if (which_table == 7){
+			update.style.display = "none";
+			activemenu = 7;
+			send("p");								// Get pump info
+		}
+		if (which_table == 8){
+			activemenu = 8; 
+			send("s");
+		}
+		if (which_table == 9){
+			activemenu = 9; 
+			send("j");
+		}
+		if (which_table == 10){
+			update.style.display = "none";
+			activemenu = 10;
+			send("A");
+		}
+		if (which_table == 12){
+			log_ask = 0;
+			document.getElementById("update_button").innerHTML = "Search";
+			activemenu = 12;
+			send("A");
+		}
+		if (which_table == 13){
+			activemenu = 13;
+			send("A");
+		}
+		if (which_table == 14){
+			activemenu = 14;
+			send("B0");
+		}
+		if (which_table == 15){
+			date_ask = 0;
+			document.getElementById("update_button").innerHTML = "Upload dates";
+			activemenu = 15;
+			send("A");
+		}
+	}
+}
+
+function selectFunction(which_table){
+	if (a18_connected == 1){
+		Loader.style.display = "none";				// Hide loader from the screen
+		
+		if (which_table == 10){
+			activemenu = 10;
+			var x = document.getElementById("comm_table");
+			var menu_title = "REMOTE";
+		}
+
+		if (which_table == 7){
+			activemenu = 7;
+			var x = document.getElementById("testing_table");			// Select proper table to show
+			var menu_title = "TESTING";									// Set screen title to show
+		}
+		
+		if (which_table == 1){
+			activemenu = 1;
+			var x = document.getElementById("time_table");
+			var menu_title = "TIME";
+			
+			for (a=0;a<=23;a++){
+  				var e = document.getElementById("form_time_hours");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=0;a<=59;a++){
+  				var e = document.getElementById("form_time_minutes");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+		}
+		
+		if (which_table == 2){
+			activemenu = 2;
+			var x = document.getElementById("date_table");
+			var menu_title = "DATE";
+			
+			for (a=1;a<=31;a++){
+  				var e = document.getElementById("form_date_day");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=1;a<=12;a++){
+  				var e = document.getElementById("form_date_month");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=2016;a<=2032;a++){
+  				var e = document.getElementById("form_date_year");
+				var option = document.createElement("option");
+				var n = a.toString();
+   				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+
+		}	
+		
+		if (which_table == 3){
+			var x = document.getElementById("options_table");
+			activemenu = 3;
+		
+			var menu_title = "OPTIONS";
+			
+			var e = document.getElementById("form_options_holtemp");
+			var option = document.createElement("option");
+			for (a=40;a<=63;a++){
+				e.remove(option,a);
+			}
+			for (a=40;a<=63;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+"°C";
+				if (datafroma18[0] == a)
+					option.selected = true;
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+			}
+
+			var e = document.getElementById("form_options_syttemp");
+			var option = document.createElement("option");
+			for (a=35;a<=45;a++){
+				e.remove(option,a);
+			}
+			for (a=35;a<=45;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+"°C";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[1] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_tminus");
+			var option = document.createElement("option");
+			for (a=0;a<=10;a++){
+				e.remove(option,a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Hrs";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[2] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_iph");
+			var option = document.createElement("option");
+			for (a=1;a<=10;a++){
+				e.remove(option,a);
+			}
+			for (a=1;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[3] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_options_ril");
+			var option = document.createElement("option");
+			for (a=1;a<=59;a++){
+				e.remove(option,a);			
+			}
+			for (a=1;a<=59;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Min.";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[4] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_options_residual");
+			var option = document.createElement("option");
+			var elementcnt = 1;
+			for (a=0.5;a<=2.5;a+=0.1){
+				e.remove(option,elementcnt);
+				elementcnt++;
+			}
+			e.remove(option,22);
+			e.remove(option,23);
+			e.remove(option,24);
+			e.remove(option,25);
+			e.remove(option,26);
+			e.remove(option,27);
+			e.remove(option,28);
+			e.remove(option,29);
+			e.remove(option,30);			
+	
+			elementcnt = 1;
+	
+			for (a=0.5;a<=2.5;a+=0.1){
+				var option = document.createElement("option");
+				var n = a.toFixed(2)+"°C";
+				option.text = n;
+				option.value = elementcnt;
+				e.add(option, elementcnt);
+				if (parseInt(datafroma18[5]) == elementcnt)
+					option.selected = true;
+				elementcnt++;
+			}
+			var n = "3°C";
+			option.text = n;
+			option.value = 3;
+			e.add(option,22);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "3.5°C";
+			option.text = n;
+			option.value = 3.5;
+			e.add(option,23);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "4°C";
+			option.text = n;
+			option.value = 4;
+			e.add(option,24);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "5°C";
+			option.text = n;
+			option.value = 5;
+			e.add(option,25);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "6°C";
+			option.text = n;
+			option.value = 6;
+			e.add(option,26);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "7°C";
+			option.text = n;
+			option.value = 7;
+			e.add(option,27);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "8°C";
+			option.text = n;
+			option.value = 8;
+			e.add(option,28);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "9°C";
+			option.text = n;
+			option.value = 9;
+			e.add(option,29);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			var n = "10°C";
+			option.text = n;
+			option.value = 10;
+			e.add(option,30);
+			if (datafroma18[5] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			
+			var e = document.getElementById("form_options_reltype");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			option.text = "Ashkenaz";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[7] == 0)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "Sepharad";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[7] == 1)
+					option.selected = true;
+
+		
+			var e = document.getElementById("form_options_tanktype");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			e.remove(option,2);
+			option.text = "Electric";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[8] == 0)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "Gaz (electronic ignition)";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[8] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "Gaz (Pilot flame)";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[8] == 2)
+					option.selected = true;
+
+
+			var e = document.getElementById("form_options_purge");
+			var option = document.createElement("option");
+			for (a=0;a<=30;a++){
+				e.remove(option,a);
+			}
+			for (a=0;a<=30;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Sec.";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[9] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_tempbuff");
+			var option = document.createElement("option");
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				e.remove(option,a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+"°C";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[10] == a)
+					option.selected = true;
+			}
+
+			var e = document.getElementById("form_options_autobaltime");
+			var option = document.createElement("option");
+			for (var a=0;a<=59;a++){
+				e.remove(option,a);
+			}
+			for (var a=0;a<=59;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+" Min.";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[16] == a)
+					option.selected = true;
+
+			}
+
+			var e = document.getElementById("form_options_tanksize");
+			var option = document.createElement("option");
+			e.remove(option,1);
+			e.remove(option,2);
+			e.remove(option,3);
+			e.remove(option,4);
+			e.remove(option,5);
+			e.remove(option,6);
+			option.text = "40 Gallons";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[12] == 1)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "50 Gallons";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[12] == 2)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "60 Gallons";
+			option.value = 3;
+			e.add(option,3);
+				if (datafroma18[12] == 3)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "80 Gallons";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[12] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "100 Gallons";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[12] == 5)
+					option.selected = true;
+			option = document.createElement("option");
+			option.text = "120 Gallons";
+			option.value = 6;
+			e.add(option,6);
+			if (datafroma18[12] == 6)
+					option.selected = true;
+
+			var e = document.getElementById("form_options_holitemp");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			option.text = "Hol temperature";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[14] == 0)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "Shabbat temperature";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[14] == 1)
+				option.selected = true;
+
+			var e = document.getElementById("form_options_shabtime");
+			var option = document.createElement("option");
+			e.remove(option,0);
+			e.remove(option,1);
+			option.text = "Pre-Defined";
+			option.value = 0;
+			e.add(option,0);
+			if (datafroma18[17] == 0)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "Sunset";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[17] >= 1)
+				option.selected = true;
+			
+			var e = document.getElementById("form_options_legion");
+			if (datafroma18[6] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+					
+			var e = document.getElementById("form_options_autobal");
+			if (datafroma18[11] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_valvechk");
+			if (datafroma18[13] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_night");
+			if (datafroma18[15] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_chassid");
+			if (datafroma18[18] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_summer");
+			if (datafroma18[19] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_rabtam");
+			if (datafroma18[20] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}			
+			var e = document.getElementById("form_options_leak");
+			if (datafroma18[21] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_second");
+			if (datafroma18[22] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+			var e = document.getElementById("form_options_wifi");
+			if (datafroma18[23] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}				
+		}
+		
+		if (which_table == 4){
+			var x = document.getElementById("geoloc_table");
+			activemenu = 4;
+			var menu_title = "GEOLOCATION";
+
+			var e = document.getElementById("form_geo_gmt");
+			var option = document.createElement("option");
+
+			elementcnt = 0;
+			for (a=12;a>=-12;a--){
+  				e.remove(option, n);
+				elementcnt++;
+			}
+			var temp = datafroma18[2].split(".");
+			elementcnt = 0;
+			for (a=12;a>=-12;a--){
+				var option = document.createElement("option");
+				var n = a.toString()+" h";
+				if (temp[0] == a)
+					option.selected = true;
+				option.text = n;
+				option.value = a;
+				e.add(option, elementcnt);
+				elementcnt++;				
+			}
+		
+			var e = document.getElementById("form_geo_dif");
+			var option = document.createElement("option");
+			
+			for (a=0;a<=59;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=59;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Min.";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				var temp_diff = Math.round(a*1.66,0);
+				if (temp_diff < 10)
+					temp_diff="0"+temp_diff;
+				option.value = temp_diff;
+				e.add(option, a);
+				if (temp_diff == temp[1])
+					option.selected = true;
+			}
+			var e = document.getElementById("form_geo_day");
+			if (datafroma18[5] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+		}
+		
+		// ********************************************************** VALET - 5 *************************************************
+		if (which_table == 5){
+			var x = document.getElementById("valet_table");
+			activemenu = 5;
+			var menu_title = "VALET";
+			var e = document.getElementById("form_valetf_enable");
+			if (datafroma18[0] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}	
+			var e = document.getElementById("form_valet_fristart");
+			var option = document.createElement("option");
+			for (var a=16;a<=20;a++){
+				e.remove(option,a);
+			}
+			for (var a=16;a<=20;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+":00";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[1] == a)
+					option.selected = true;
+			}
+			var e = document.getElementById("form_valet_frilong");
+			var option = document.createElement("option");
+			for (var a=1;a<=3;a++){
+				e.remove(option,a);
+			}
+			for (var a=1;a<=3;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+"H";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[2] == a)
+					option.selected = true;
+			}
+			var e = document.getElementById("form_valets_enable");
+			if (datafroma18[3] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}	
+			
+			
+			var e = document.getElementById("form_valet_satstart");
+			var option = document.createElement("option");
+			for (var a=11;a<=14;a++){
+				e.remove(option,a);
+			}
+			for (var a=11;a<=14;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+":00";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[4] == a)
+					option.selected = true;
+			}
+			
+			
+			var e = document.getElementById("form_valet_satlong");
+			var option = document.createElement("option");
+			for (var a=1;a<=3;a++){
+				e.remove(option,a);
+			}
+			for (var a=1;a<=3;a++){
+				var option = document.createElement("option");
+				var n = a.toString();
+				option.text = n+"H";
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[5] == a)
+					option.selected = true;
+			}
+		}
+		
+		// ********************************************************** 6 *************************************************
+		if (which_table == 6){
+			var x = document.getElementById("tnt_table");
+			activemenu = 6;
+			var menu_title = "TUNING";
+			
+			var e = document.getElementById("form_tnt_pumpmodfreq");
+			var option = document.createElement("option");
+
+			for (a=0;a<=100;a++){
+  				e.remove(option, n);
+			}
+			var temp_pwm = Math.round(datafroma18[0]/2.55,0);
+			for (a=0;a<=100;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" %";
+				if (temp_pwm == a)
+					option.selected = true;
+				option.text = n;
+				option.value = parseInt(Math.round(a*2.55,0));
+				e.add(option, a);
+			}
+		
+			var e = document.getElementById("form_tnt_pumppeak");
+			var option = document.createElement("option");
+			
+			datafroma18[1] = datafroma18[1] / 1000;
+			
+			for (a=0;a<=10;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Sec";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = (a*10);
+				e.add(option, a);
+				if (datafroma18[1] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_tnt_secpeakdelay");
+			var option = document.createElement("option");
+			
+			for (a=0;a<=10;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Sec";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[5] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_tnt_secholdmod");
+			var option = document.createElement("option");
+
+			for (a=0;a<=100;a++){
+  				e.remove(option, n);
+			}
+			var temp_pwm = Math.round(datafroma18[6]/2.55,0);
+			for (a=0;a<=100;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" %";
+				if (temp_pwm == a)
+					option.selected = true;
+				option.text = n;
+				option.value = parseInt(Math.round(a*2.55,0));;
+				e.add(option, a);
+			}
+			
+			var e = document.getElementById("form_tnt_pilotpeakdelay");
+			var option = document.createElement("option");
+			
+			for (a=0;a<=10;a++){
+  				e.remove(option, a);
+			}
+			for (a=0;a<=10;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" Sec";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[2] == a)
+					option.selected = true;
+			}
+			
+			var e = document.getElementById("form_tnt_pilotholdmod");
+			var option = document.createElement("option");
+
+			for (a=0;a<=100;a++){
+  				e.remove(option, n);
+			}
+			var temp_pwm = Math.round(datafroma18[3]/2.55,0);
+			for (a=0;a<=100;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+" %";
+				if (temp_pwm == a)
+					option.selected = true;
+				option.text = n;
+				option.value = parseInt(a*2.55);
+				e.add(option, a);
+			}
+			
+			var e = document.getElementById("form_tnt_sysfreq");
+			var option = document.createElement("option");
+
+			for (a=1;a<=5;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "30.64 Hz";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[4] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "122.55 Hz";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[4] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "490.20 Hz";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[4] == 3)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "3.921 Mhz";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[4] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "31.372 Mhz";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[4] == 5)
+				option.selected = true;
+		}		
+
+		if (which_table == 8){
+			var x = document.getElementById("daylight_table");
+			activemenu = 8;
+		
+			var menu_title = "DAYLIGHT SAVING";
+			
+			var e = document.getElementById("form_seq_win");
+			var option = document.createElement("option");
+
+			for (a=1;a<=5;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "1ST";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[0] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "2ND";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[0] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "3RD";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[0] == 3)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "4TH";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[0] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "5TH";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[0] == 5)
+				option.selected = true;
+
+			var e = document.getElementById("form_day_win");
+			var option = document.createElement("option");
+
+			for (a=1;a<=7;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "SUN";
+			option.value = 7;
+			e.add(option,7);
+			if (datafroma18[1] == 7)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "MON";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[1] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "TUE";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[1] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "WED";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[1] == 3)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "THU";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[1] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "FRI";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[1] == 5)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "SAT";
+			option.value = 6;
+			e.add(option,6);
+			if (datafroma18[1] == 6)
+				option.selected = true;
+
+			var e = document.getElementById("form_mon_win");
+			var option = document.createElement("option");
+
+			for (a=1;a<=12;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "JAN";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[2] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "FEB";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[2] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "MAR";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[2] == 3)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "APR";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[2] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "MAY";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[2] == 5)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "JUN";
+			option.value = 6;
+			e.add(option,6);
+			if (datafroma18[2] == 6)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "JUL";
+			option.value = 7;
+			e.add(option,7);
+			if (datafroma18[2] == 7)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "AUG";
+			option.value = 8;
+			e.add(option,8);
+			if (datafroma18[2] == 8)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "SEP";
+			option.value = 9;
+			e.add(option,9);
+			if (datafroma18[2] == 9)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "OCT";
+			option.value = 10;
+			e.add(option,10);
+			if (datafroma18[2] == 10)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "NOV";
+			option.value = 11;
+			e.add(option,11);
+			if (datafroma18[2] == 11)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "DEC";
+			option.value = 12;
+			e.add(option,12);
+			if (datafroma18[2] == 12)
+				option.selected = true;
+			
+			var e = document.getElementById("form_chg_win");
+			var option = document.createElement("option");
+			for (a=1;a<=6;a++){
+				e.remove(option,a);
+			}
+			for (a=1;a<=6;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+"AM";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[3] == a)
+					option.selected = true;
+			}
+			var e = document.getElementById("form_hrp_win");
+			if (datafroma18[4] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+
+			var e = document.getElementById("form_seq_sum");
+			var option = document.createElement("option");
+
+			for (a=1;a<=5;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "1ST";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[5] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "2ND";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[5] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "3RD";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[5] == 3)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "4TH";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[5] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "5TH";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[5] == 5)
+				option.selected = true;
+
+			var e = document.getElementById("form_day_sum");
+			var option = document.createElement("option");
+
+			for (a=1;a<=7;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "SUN";
+			option.value = 7;
+			e.add(option,7);
+			if (datafroma18[6] == 7)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "MON";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[6] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "TUE";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[6] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "WED";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[6] == 3)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "THU";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[6] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "FRI";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[6] == 5)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "SAT";
+			option.value = 6;
+			e.add(option,6);
+			if (datafroma18[6] == 6)
+				option.selected = true;
+
+			var e = document.getElementById("form_mon_sum");
+			var option = document.createElement("option");
+
+			for (a=1;a<=12;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "JAN";
+			option.value = 1;
+			e.add(option,1);
+			if (datafroma18[7] == 1)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "FEB";
+			option.value = 2;
+			e.add(option,2);
+			if (datafroma18[7] == 2)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "MAR";
+			option.value = 3;
+			e.add(option,3);
+			if (datafroma18[7] == 3)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "APR";
+			option.value = 4;
+			e.add(option,4);
+			if (datafroma18[7] == 4)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "MAY";
+			option.value = 5;
+			e.add(option,5);
+			if (datafroma18[7] == 5)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "JUN";
+			option.value = 6;
+			e.add(option,6);
+			if (datafroma18[7] == 6)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "JUL";
+			option.value = 7;
+			e.add(option,7);
+			if (datafroma18[7] == 7)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "AUG";
+			option.value = 8;
+			e.add(option,8);
+			if (datafroma18[7] == 8)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "SEP";
+			option.value = 9;
+			e.add(option,9);
+			if (datafroma18[7] == 9)
+				option.selected = true;
+			var option = document.createElement("option");
+			option.text = "OCT";
+			option.value = 10;
+			e.add(option,10);
+			if (datafroma18[7] == 10)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "NOV";
+			option.value = 11;
+			e.add(option,11);
+			if (datafroma18[7] == 11)
+				option.selected = true;
+			option = document.createElement("option");
+			option.text = "DEC";
+			option.value = 12;
+			e.add(option,12);
+			if (datafroma18[7] == 12)
+				option.selected = true;
+			
+			var e = document.getElementById("form_chg_sum");
+			var option = document.createElement("option");
+			for (a=1;a<=6;a++){
+				e.remove(option,a);
+			}
+			for (a=1;a<=6;a++){
+				var option = document.createElement("option");
+				var n = a.toString()+"AM";
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = a;
+				e.add(option, a);
+				if (datafroma18[8] == a)
+					option.selected = true;
+			}
+			var e = document.getElementById("form_hrp_sum");
+			if (datafroma18[9] == 1){
+					e.checked = true;
+					e.value = 1;
+			}else{
+					e.value = 0;
+			}
+
+		}
+
+		if (which_table == 9){
+			var x = document.getElementById("water_table");
+			activemenu = 9;
+			var menu_title = "INLET &deg;C";
+			
+			var radioseq = 1;
+			for (var l1=1;l1<=12;l1++){
+				for (var l2=2;l2<=18;l2++){
+					var e = document.getElementById("wt_"+radioseq);
+					if (datafroma18[l1-1] == l2){
+						e.checked = true;
+						e.value = datafroma18[l1-1];
+					}else{
+						e.value = 0;
+					}
+					radioseq++;
+				}
+			}
+		}
+				
+		if (which_table == 12){
+			var x = document.getElementById("log_table");
+			activemenu = 12;
+			var menu_title = "LOG";
+			for (a=1;a<=31;a++){
+  				var e = document.getElementById("form_log_day");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=1;a<=12;a++){
+  				var e = document.getElementById("form_log_month");
+				var option = document.createElement("option");
+				var n = a.toString();
+				if (a < 10)
+					n="0"+n;
+				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+			for (a=2016;a<=2032;a++){
+  				var e = document.getElementById("form_log_year");
+				var option = document.createElement("option");
+				var n = a.toString();
+   				option.text = n;
+				option.value = n;
+				e.add(option, n);
+			}
+		}
+		if (which_table == 13){
+			var x = document.getElementById("regis_table");
+			activemenu = 13;
+			var menu_title = "REGISTRATION";
+			
+			var e = document.getElementById("form_reg_sal");
+			var option = document.createElement("option");
+
+			for (a=1;a<=5;a++){
+  				e.remove(option, n);
+			}
+			
+			var option = document.createElement("option");
+			option.text = "Mr.";
+			option.value = 1;
+			e.add(option,1);
+			//if (datafroma18[0] == 1)
+			//	option.selected = true;
+			option = document.createElement("option");
+			option.text = "Mrs.";
+			option.value = 2;
+			e.add(option,2);
+			//if (datafroma18[0] == 2)
+			//	option.selected = true;
+			option = document.createElement("option");
+			option.text = "Ms.";
+			option.value = 3;
+			e.add(option,3);
+			//if (datafroma18[0] == 3)
+			//	option.selected = true;
+			option = document.createElement("option");
+			option.text = "Dr.";
+			option.value = 4;
+			e.add(option,4);
+			//if (datafroma18[0] == 4)
+			//	option.selected = true;
+			option = document.createElement("option");
+			option.text = "Rav.";
+			option.value = 5;
+			e.add(option,5);
+			//if (datafroma18[0] == 5)
+			//	option.selected = true;
+			
+		}
+		if (which_table == 14){
+			var x = document.getElementById("active_table");
+			activemenu = 14;
+			var menu_title = "ACTIVATION";
+
+		}
+		
+		if (which_table == 15){
+			var x = document.getElementById("dates_table");
+			activemenu = 15;
+			var menu_title = "HOLIDAYS";
+		}
+		
+
+//		mainmenu.style.display = "none";  // Recopied on top of function
+		if (lastopen == null){
+			lastopen = x;   
+			x.style.display = "block";
+			document.getElementById("menutitle").innerHTML = menu_title;
+			if (which_table != 7 && which_table != 10 )
+				update.style.display = "block";
+		}else{
+			if(x.id == lastopen.id){
+	  			x.style.display = "block";  //     			x.style.display = "none";
+				lastopen = null;
+				document.getElementById("menutitle").innerHTML = menu_title;   //				document.getElementById("menutitle").innerHTML = "";
+				update.style.display = "block";				// 				update.style.display = "none";
+				lastopen = x;
+			 }else{
+				document.getElementById("menutitle").innerHTML = menu_title;
+				lastopen.style.display = "none";
+				x.style.display = "block";
+				if (which_table != 7 && which_table != 10 )
+					update.style.display = "block";
+				lastopen = x;
+			 }
+		}
+	}
+}
+
+function showPosition(position) {
+  xxx.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+}
+
+
+/*function fillMinutes(Who,Min,Max) {
+  var x = document.getElementById(Who);
+  var option = document.createElement("option");
+  for (x=Min;x<=Max,x++)
+	  x.add(option, x);
+}
+
+
+
+var xxx = document.getElementById("mapholder");
+
+var map, infoWindow;
+
+function initMap() {
+map = new google.maps.Map(document.getElementById('map'), {
+  center: {lat: -34.397, lng: 150.644},
+  zoom: 6
+});
+infoWindow = new google.maps.InfoWindow;
+
+// Try HTML5 geolocation.
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+	var pos = {
+	  lat: position.coords.latitude,
+	  lng: position.coords.longitude
+	};
+
+	infoWindow.setPosition(pos);
+	infoWindow.setContent('Location found.');
+	infoWindow.open(map);
+	map.setCenter(pos);
+  }, function() {
+	handleLocationError(true, infoWindow, map.getCenter());
+  });
+} else {
+  // Browser doesn't support Geolocation
+  handleLocationError(false, infoWindow, map.getCenter());
+}
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+infoWindow.setPosition(pos);
+infoWindow.setContent(browserHasGeolocation ?
+					  'Error: The Geolocation service failed.' :
+					  'Error: Your browser doesn\'t support geolocation.');
+infoWindow.open(map);
+}
+
+
+
+
+var x = document.getElementById("map");
+
+if (navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(showPosition);
+
+
+} else {
+	x.innerHTML = "Geolocation is not supported by this browser.";
+}
+
+
+
+
+function myFunction() {
+  if (document.getElementById("linked")){
+  	 window.location.replace("https://www.amnon18.net/webBT/test2.html");
+  }
+}
+
+async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBf5--PyKmQkDkdniQoXI8vRcmOpRpseW8&callback=initMap">
+
+ <tr>
+            <td><span class="menuitem" onclick="fetchdata(12)">RESET</span></td>
+          </tr>
+
+*/
+
+</script>
+</body>
+</html>
