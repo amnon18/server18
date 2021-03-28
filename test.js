@@ -231,6 +231,16 @@ updateButton.addEventListener('click', function() {
 			alert("Activated");
 			
 		}
+		if (activemenu == 15){	// Date section
+			d0 = document.getElementById("form_log_day").value;
+			d1 = document.getElementById("form_log_month").value;
+			d2 = document.getElementById("form_log_year").value;
+			console.log("y"+d0+d1+d2+".log");
+			log_ask = 0;
+			appupdatedb("y"+d0+d1+d2+".log");
+			send("y"+d0+d1+d2+".log");
+			return;
+		}
 		activemenu = 0;
 	}
 });
