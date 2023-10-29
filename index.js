@@ -24,6 +24,17 @@ next();
 });
 
 
+app.get('/', function(req, res){
+	io.emit('remote', 'Knocking');	
+  res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/base', function(req, res){
+  res.sendFile(__dirname + '/base.html');
+});
+
+
+
 io.on('connection', function(socket){
 	socket.on('delayer', function(msg){ 
 		delay(1000);
@@ -48,7 +59,18 @@ function delay(ms) {
 
 io.on('connection', function(socket){
 	socket.on('remote', function(msg){ 
-	io.emit(ausr, msg);
+		if (msg.substr(0,2) == '$S'){
+			ausr = msg.substr(2,4);
+			return;
+		}
+		if (msg.substr(0,2) == '$L'){
+		    io.emit('remote', "Clients online: "+numUsers);
+			for (var x=0;x<=clientsession.length-1;x++) {
+				io.emit('remote',  "Client ID: "+clients[x]+":"+clientsession[x]);
+			}
+		}else{
+			io.emit(ausr, msg);
+		}
 	});
 });
 
@@ -61,16 +83,32 @@ io.on('connection', function(socket){
 
 
 socket.on('disconnect', function () {
-	io.emit('remote', 'Customer left remote comm. ');
+	io.emit('remote', 'Customer left remote comm. '+this.id);
+	for (var r=0;r<=clientsession.length-1;r++){
+		if (clientsession[r] == this.id){
+			clientsession.splice(r, 1); 				
+			clients.splice(r, 1); 				
+		}
+	}
 	socket.disconnect(true);
+	numUsers--;
+	clientcount--;
+	if (numUsers<0) numUsers=0;
+	if (clientcount<0) clientcount=0;
 });
 
 socket.on('new', function(username) {
 	
 	addedUser = true;
-
-	io.emit('remote', 'joined remote service.');
+	socket.username = username;
+	io.emit('remote', socket.username+' joined remote service.');
+	numUsers++;
+	io.emit('remote', 'Number of clients online: '+numUsers);
+	io.emit('rid', username);
 	console.log(username);
+	clients[clientcount] =  username;
+	clientsession[clientcount] =  socket.id;
+	clientcount++;
 });
 
 // when the client emits 'add user', this listens and executes
