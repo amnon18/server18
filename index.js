@@ -131,7 +131,3 @@ server.listen(port, function(){
   io.emit('remote', 'Listening.....');
   console.log('listening on *:' + port);
 });
-
-socket.on("connect_error", (err) => {
-  io.emit('remote', 'connect_error due to ${err.message}`);
-});
