@@ -37,7 +37,8 @@ app.get('/base', function(req, res){
 io.on('connection', function(socket){
 	socket.on('delayer', function(msg){ 
 		delay(1000);
-		console.log('Sending...');
+  	    io.emit('remote', "Sending...);
+//		console.log('Sending...');
 		io.emit(ausr, msg);
 	});
 	
@@ -104,7 +105,8 @@ socket.on('new', function(username) {
 	numUsers++;
 	io.emit('remote', 'Number of clients online: '+numUsers);
 	io.emit('rid', username);
-	console.log(username);
+    io.emit('remote', username);
+//	console.log(username);
 	clients[clientcount] =  username;
 	clientsession[clientcount] =  socket.id;
 	clientcount++;
@@ -127,6 +129,7 @@ socket.on('add user', function (username) {
 
 
 server.listen(port, function(){
-  console.log('listening on *:' + port);
+  io.emit('remote', "Listening on *:"+port);
+//  console.log('listening on *:' + port);
 });
 
