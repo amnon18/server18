@@ -25,6 +25,7 @@ next();
 
 
 app.get('/', function(req, res){
+	io.emit('remote', 'Knocking');	
   res.sendFile(__dirname + '/index.html');
 });
 
@@ -127,6 +128,7 @@ socket.on('add user', function (username) {
 
 
 server.listen(port, function(){
+  io.emit('remote', 'Listening.....');
   console.log('listening on *:' + port);
 });
 
