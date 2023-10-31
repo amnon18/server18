@@ -131,3 +131,7 @@ server.listen(port, function(){
   io.emit('remote', 'Listening.....');
   console.log('listening on *:' + port);
 });
+
+socket.onAny(() => {
+  console.log('Got something:' + port);
+});
