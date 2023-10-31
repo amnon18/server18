@@ -132,6 +132,3 @@ server.listen(port, function(){
   console.log('listening on *:' + port);
 });
 
-socket.onAny(() => {
-  console.log('Got something:');
-});
