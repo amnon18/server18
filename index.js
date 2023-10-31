@@ -155,27 +155,19 @@ function catchAllEventListener(socket, eventName, ...args) {
   // You can add custom logic here to handle any event as needed
 }
 
-io.on("connection", (socket) => {
-  console.log("initial transport", socket.conn.transport.name); // prints "polling"
+io.on('connection', (socket) => {
+  console.log('A user connected');
 
-  socket.conn.once("upgrade", () => {
-    // called when the transport is upgraded (i.e. from HTTP long-polling to WebSocket)
-    console.log("upgraded transport", socket.conn.transport.name); // prints "websocket"
+  // Listen for messages from the client
+  socket.on('message', (msg) => {
+    console.log('Message from client:', msg);
   });
 
-  socket.conn.on("packet", ({ type, data }) => {
-    console.log("Receieved: ".data); // prints "websocket"
-  });
+  // Send a welcome message to the client
+  socket.emit('message', 'Welcome to the server!');
 
-  socket.conn.on("packetCreate", ({ type, data }) => {
-    // called for each packet sent
-  });
-
-  socket.conn.on("drain", () => {
-    // called when the write buffer is drained
-  });
-
-  socket.conn.on("close", (reason) => {
-    // called when the underlying connection is closed
+  // Listen for the client's disconnection
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
   });
 });
