@@ -164,7 +164,7 @@ io.on("connection", (socket) => {
   });
 
   socket.conn.on("packet", ({ type, data }) => {
-    console.log("Receieved"); // prints "websocket"
+    console.log("Receieved: ".data); // prints "websocket"
   });
 
   socket.conn.on("packetCreate", ({ type, data }) => {
