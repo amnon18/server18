@@ -44,6 +44,21 @@ io.on('connection', function(socket){
 	
 });
 
+
+io.on('new', function(username) {
+	
+	addedUser = true;
+	socket.username = username;
+	io.emit('remote', socket.username+' joined remote service.');
+	numUsers++;
+	io.emit('remote', 'Number of clients online: '+numUsers);
+	io.emit('rid', username);
+	console.log(username);
+	clients[clientcount] =  username;
+	clientsession[clientcount] =  socket.id;
+	clientcount++;
+});
+
 function delay(ms) {
 			var cur_d = new Date();
 			var cur_ticks = cur_d.getTime();
@@ -194,16 +209,4 @@ io.on('message', (socket) => {
  */
 });
 
-io.on('new', function(username) {
-	
-	addedUser = true;
-	socket.username = username;
-	io.emit('remote', socket.username+' joined remote service.');
-	numUsers++;
-	io.emit('remote', 'Number of clients online: '+numUsers);
-	io.emit('rid', username);
-	console.log(username);
-	clients[clientcount] =  username;
-	clientsession[clientcount] =  socket.id;
-	clientcount++;
-});
+
