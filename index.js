@@ -171,9 +171,10 @@ function catchAllEventListener(socket, eventName, ...args) {
 }
 
 
+/*
 io.on('connection', (socket) => {
   console.log('A user connected');
-/*
+
   // Listen for messages from the client
   socket.on('message', (msg) => {
     console.log('Message from client:', msg);
@@ -186,27 +187,39 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
- */
+
 });
+ */
+ 
+io.on('connection', (socket) => {
 
-io.on('message', (socket) => {
-  console.log('Message in');
-  // Listen for messages from the client
-  socket.on('message', (msg) => {
-    console.log('Message from client:', msg);
-  });
-/*
+  console.log('Connected');
+  console.log(socket.id);
+  console.log("JWT token test: ",socket.handshake.headers)
 
+  socket.on('event_name', (data, res) => {
 
+    console.log(`Message from Client (${socket.id}): `, data);
 
-  // Send a welcome message to the client
-  socket.emit('message', 'Welcome to the server!');
+    io.emit("Send Message io.emit Broadcasted : ", data);
+    socket.emit('enviar-mensaje', data);
 
-  // Listen for the client's disconnection
+    socket.emit("updateitem", "1", { name: "updated" }, (response) => {
+      console.log(response.status); // ok
+    });
+  
+  })
+  
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
-  });
- */
-});
+
+    console.log('Disconnected');
+
+  })
+
+  socket.on('error', () => {
+    console.log('error desconocido');
+  })
+
+})
 
 
