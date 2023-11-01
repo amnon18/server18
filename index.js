@@ -182,6 +182,8 @@ io.on('message', (socket) => {
   });
 /*
 
+
+
   // Send a welcome message to the client
   socket.emit('message', 'Welcome to the server!');
 
@@ -190,4 +192,18 @@ io.on('message', (socket) => {
     console.log('A user disconnected');
   });
  */
+});
+
+io.on('new', function(username) {
+	
+	addedUser = true;
+	socket.username = username;
+	io.emit('remote', socket.username+' joined remote service.');
+	numUsers++;
+	io.emit('remote', 'Number of clients online: '+numUsers);
+	io.emit('rid', username);
+	console.log(username);
+	clients[clientcount] =  username;
+	clientsession[clientcount] =  socket.id;
+	clientcount++;
 });
