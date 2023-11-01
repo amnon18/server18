@@ -175,6 +175,7 @@ io.on('connection', function(socket){
 	socket.on('ronen', function(msg){
 		console.log("Message from Ronen");
 		return;
+	}
 });
 /*
 io.on('connection', (socket) => {
