@@ -195,6 +195,7 @@ io.on('connection', (socket) => {
 
   console.log('Connected');
   console.log(socket.id);
+  console.log(socket.data);
   console.log("JWT token test: ",socket.handshake.headers)
 
   socket.on('event_name', (data, res) => {
