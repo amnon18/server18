@@ -97,6 +97,8 @@ io.on('connection', function(socket){
 });
 
 
+
+
 socket.on('disconnect', function () {
 	io.emit('remote', 'Customer left remote comm. '+this.id);
 	for (var r=0;r<=clientsession.length-1;r++){
@@ -170,13 +172,7 @@ function catchAllEventListener(socket, eventName, ...args) {
   // You can add custom logic here to handle any event as needed
 }
 
-// Receieved info from remote and sends to base
-io.on('connection', function(socket){
-	socket.on('ronen', function(msg){
-		console.log("Message from Ronen");
-		return;
-	}
-});
+
 /*
 io.on('connection', (socket) => {
   console.log('A user connected');
