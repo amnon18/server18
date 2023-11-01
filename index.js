@@ -25,7 +25,6 @@ next();
 
 
 app.get('/', function(req, res){
-	io.emit('remote', 'Knocking');	
   res.sendFile(__dirname + '/index.html');
 });
 
@@ -49,6 +48,7 @@ io.on('new', function(username) {
 	
 	addedUser = true;
 	socket.username = username;
+	io.emit('1969', socket.username+' joined remote service.');
 	io.emit('remote', socket.username+' joined remote service.');
 	numUsers++;
 	io.emit('remote', 'Number of clients online: '+numUsers);
@@ -111,7 +111,7 @@ socket.on('disconnect', function () {
 	if (numUsers<0) numUsers=0;
 	if (clientcount<0) clientcount=0;
 });
-
+/*
 socket.on('new', function(username) {
 	
 	addedUser = true;
@@ -125,7 +125,7 @@ socket.on('new', function(username) {
 	clientsession[clientcount] =  socket.id;
 	clientcount++;
 });
-
+*/
 // when the client emits 'add user', this listens and executes
 socket.on('add user', function (username) {
 	if (addedUser) return;
@@ -190,7 +190,7 @@ io.on('connection', (socket) => {
 
 });
  */
- 
+ /*
 io.on('connection', (socket) => {
 
   console.log('Connected');
@@ -222,5 +222,6 @@ io.on('connection', (socket) => {
   })
 
 })
+*/
 
 
