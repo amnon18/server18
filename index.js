@@ -156,9 +156,9 @@ function catchAllEventListener(socket, eventName, ...args) {
 }
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  //console.log('A user connected');
   console.log('Message from client:', msg);
-  socket.emit('message', 'Welcome to the server!');
+//  socket.emit('message', 'Welcome to the server!');
 });
 
 /*io.on('connection', (socket) => {
