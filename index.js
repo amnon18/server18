@@ -170,6 +170,9 @@ function catchAllEventListener(socket, eventName, ...args) {
   // You can add custom logic here to handle any event as needed
 }
 
+socket.on('ronen', function (username) {
+	 console.log('gor the message from ronen);
+});
 
 /*
 io.on('connection', (socket) => {
