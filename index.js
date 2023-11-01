@@ -173,7 +173,7 @@ function catchAllEventListener(socket, eventName, ...args) {
 // Receieved info from remote and sends to base
 io.on('connection', function(socket){
 	socket.on('ronen', function(msg){
-		console.log(:Message from Ronen");
+		console.log("Message from Ronen");
 		return;
 });
 /*
