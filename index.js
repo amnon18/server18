@@ -114,6 +114,10 @@ socket.on('disconnect', function () {
 	if (clientcount<0) clientcount=0;
 });
 
+socket.on('ronen', function(username) {
+	console.log("Hello world");
+});
+
 socket.on('new', function(username) {
 	addedUser = true;
 	socket.username = username;
