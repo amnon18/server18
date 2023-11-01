@@ -26,7 +26,7 @@ next();
 
 app.get('/', function(req, res){
 	io.emit('remote', 'Knocking');	
-  res.sendFile(__dirname + '/remote.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/base', function(req, res){
@@ -157,6 +157,12 @@ function catchAllEventListener(socket, eventName, ...args) {
 
 io.on('connection', (socket) => {
   console.log('A user connected');
+  console.log('Message from client:', msg);
+  socket.emit('message', 'Welcome to the server!');
+});
+
+/*io.on('connection', (socket) => {
+  console.log('A user connected');
 
   // Listen for messages from the client
   socket.on('message', (msg) => {
@@ -171,3 +177,4 @@ io.on('connection', (socket) => {
     console.log('A user disconnected');
   });
 });
+*/
