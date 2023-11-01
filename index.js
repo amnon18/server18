@@ -26,7 +26,7 @@ next();
 
 app.get('/', function(req, res){
 	io.emit('remote', 'Knocking');	
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/remote.html');
 });
 
 app.get('/base', function(req, res){
@@ -79,7 +79,7 @@ io.on('connection', function(socket){
 	socket.on('base', function(msg){
 		io.emit('remote', msg);
 		return;
-	});
+});
 
 
 socket.on('disconnect', function () {
