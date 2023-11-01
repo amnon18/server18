@@ -155,15 +155,10 @@ function catchAllEventListener(socket, eventName, ...args) {
   // You can add custom logic here to handle any event as needed
 }
 
+
 io.on('connection', (socket) => {
-  //console.log('A user connected');
-  console.log('Message from client:', msg);
-//  socket.emit('message', 'Welcome to the server!');
-});
-
-/*io.on('connection', (socket) => {
   console.log('A user connected');
-
+/*
   // Listen for messages from the client
   socket.on('message', (msg) => {
     console.log('Message from client:', msg);
@@ -176,5 +171,5 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
+ */
 });
-*/
