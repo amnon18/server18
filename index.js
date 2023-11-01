@@ -173,3 +173,21 @@ io.on('connection', (socket) => {
   });
  */
 });
+
+io.on('message', (socket) => {
+  console.log('Message in');
+  // Listen for messages from the client
+  socket.on('message', (msg) => {
+    console.log('Message from client:', msg);
+  });
+/*
+
+  // Send a welcome message to the client
+  socket.emit('message', 'Welcome to the server!');
+
+  // Listen for the client's disconnection
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
+ */
+});
