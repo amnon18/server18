@@ -15,6 +15,9 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
+  socket.on('base', () => {
+    console.log('message sent');
+  });
 });
 
 const PORT = process.env.PORT || 4000;
