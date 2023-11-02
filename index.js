@@ -22,9 +22,13 @@ io.on('connection', (socket) => {
 
 io.on('connection', (socket) => {
   console.log('Receieveing....');
-  socket.on('base', (msg) => {
-    console.log('message sent'.msg);
+  socket.on('base', (message) => {
+    console.log('Message Received: ' + message);
+    io.emit('message', message);
   });
+//  socket.on('base', (msg) => {
+//    console.log('message sent'.msg);
+//  });
 });
 
 const PORT = process.env.PORT || 4000;
