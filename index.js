@@ -22,8 +22,8 @@ io.on('connection', (socket) => {
 
 io.on('connection', (socket) => {
   console.log('Receieveing....');
-  socket.on('base', () => {
-    console.log('message sent');
+  socket.on('base', (msg) => {
+    console.log('message sent'.msg);
   });
 });
 
