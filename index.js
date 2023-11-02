@@ -15,15 +15,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });
 
-
- socket.on('message', (message) => {
-    console.log('Message Received:', message);
-    // You can also broadcast the message to all connected clients
-    io.emit('message', message);
-  });
-  
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
