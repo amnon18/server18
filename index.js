@@ -13,10 +13,12 @@ const io = socketIo(server);
 io.on('connection', (socket) => {
   console.log('A user connected');
 
- socket.onAny((eventName, ...args) => {
-    console.log('Event Received:', eventName);
-    console.log('Data:', ...args);
-  });
+ socket.on('*', (packet) => {
+    // packet is an array with the event name as the first element followed by any data
+    const eventName = packet[0];
+    const eventData = packet[1];
+    console.log('Event Received:', eventName, 'Data:', eventData);
+	});
   
   // Listen for messages from this specific client
   //socket.on('message', (data) => {
