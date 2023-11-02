@@ -1,31 +1,233 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
+var app = require('express')();
+var server = require('http').createServer(app);    //var http = require('http').Server(app);
+var io = require('socket.io')(server);             //var io = require('socket.io')(http);
+var port = process.env.PORT || 4000;
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
+//************************************************
+var numUsers = 0;
+var clients = []
+var clientsession = []
+var clientcount = 0;
+var users = {};
+var userNumber = 1;
+var ausr = ''; //Active user
+//************************************************
 
-app.get('/', (req, res) => {
+// Allow access control for web requests
+
+app.use(function(req, res, next) {
+ res.header("Access-Control-Allow-Origin", "*");
+res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+next();
+});
+
+
+app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.onAny((eventName, ...args) => {
-    const profile = args.find(arg => arg.profile);
-    if(profile) {
-      console.log(`Received message from ${profile.name}:`);
-    } else {
-      console.log(`Received anonymous message:`);
-    }
-    console.log(`Event: ${eventName}, Message:`, args);
-  });
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
+app.get('/base', function(req, res){
+  res.sendFile(__dirname + '/base.html');
 });
 
-server.listen(4000, () => {
-  console.log('listening on *: 4000');
+
+
+io.on('connection', function(socket){
+	socket.on('delayer', function(msg){ 
+		delay(1000);
+		console.log('Sending...');
+		io.emit(ausr, msg);
+	});
+	
 });
+
+
+io.on('new', function(username) {
+	
+	addedUser = true;
+	socket.username = username;
+	io.emit('1969', socket.username+' joined remote service.');
+	io.emit('remote', socket.username+' joined remote service.');
+	numUsers++;
+	io.emit('remote', 'Number of clients online: '+numUsers);
+	io.emit('rid', username);
+	console.log(username);
+	clients[clientcount] =  username;
+	clientsession[clientcount] =  socket.id;
+	clientcount++;
+});
+
+function delay(ms) {
+			var cur_d = new Date();
+			var cur_ticks = cur_d.getTime();
+			var ms_passed = 0;
+			while(ms_passed < ms) {
+				var d = new Date();  // Possible memory leak?
+				var ticks = d.getTime();
+				ms_passed = ticks - cur_ticks;
+				// d = null;  // Prevent memory leak?
+    	    }
+	    }
+
+
+io.on('connection', function(socket){
+	socket.on('remote', function(msg){ 
+		if (msg.substr(0,2) == '$S'){
+			ausr = msg.substr(2,4);
+			return;
+		}
+		if (msg.substr(0,2) == '$L'){
+		    io.emit('remote', "Clients online: "+numUsers);
+			for (var x=0;x<=clientsession.length-1;x++) {
+				io.emit('remote',  "Client ID: "+clients[x]+":"+clientsession[x]);
+			}
+		}else{
+			io.emit(ausr, msg);
+		}
+	});
+});
+
+// Receieved info from remote and sends to base
+io.on('connection', function(socket){
+	socket.on('base', function(msg){
+		io.emit('remote', msg);
+		return;
+});
+
+
+
+
+socket.on('disconnect', function () {
+	io.emit('remote', 'Customer left remote comm. '+this.id);
+	for (var r=0;r<=clientsession.length-1;r++){
+		if (clientsession[r] == this.id){
+			clientsession.splice(r, 1); 				
+			clients.splice(r, 1); 				
+		}
+	}
+	socket.disconnect(true);
+	numUsers--;
+	clientcount--;
+	if (numUsers<0) numUsers=0;
+	if (clientcount<0) clientcount=0;
+});
+
+socket.on('ronen', function(username) {
+	console.log("Hello world");
+});
+
+socket.on('new', function(username) {
+	addedUser = true;
+	socket.username = username;
+	io.emit('1969', socket.username+' joined remote service.');
+	io.emit('remote', socket.username+' joined remote service.');
+	numUsers++;
+	io.emit('remote', 'Number of clients online: '+numUsers);
+	io.emit('rid', username);
+	console.log(username);
+	clients[clientcount] =  username;
+	clientsession[clientcount] =  socket.id;
+	clientcount++;
+});
+
+// when the client emits 'add user', this listens and executes
+socket.on('add user', function (username) {
+	if (addedUser) return;
+	// we store the username in the socket session for this client
+	socket.username = username;
+	++numUsers;
+	addedUser = true;
+	socket.emit('remote', {
+	  numUsers: numUsers
+	});
+	io.emit('remote', 'Customer joined remote com.');
+	 ++numUsers;
+	});
+});
+
+
+server.listen(port, function(){
+  io.emit('remote', 'Listening.....');
+  console.log('listening on *:' + port);
+});
+
+io.use((socket, next) => {
+  const originalOnevent = socket.onevent;
+  socket.onevent = function (packet) {
+    const [eventName, ...args] = packet.data;
+    console.log(`Event received: ${eventName}`);
+
+    // Catch-all event listener
+    catchAllEventListener(socket, eventName, ...args);
+
+    // Call the original onevent function
+    originalOnevent.call(this, packet);
+  };
+  next();
+});
+
+function catchAllEventListener(socket, eventName, ...args) {
+  console.log('Catch-all event listener triggered');
+  console.log('Event Name:', eventName);
+  console.log('Arguments:', args);
+  
+  // You can add custom logic here to handle any event as needed
+}
+
+
+/*
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // Listen for messages from the client
+  socket.on('message', (msg) => {
+    console.log('Message from client:', msg);
+  });
+
+  // Send a welcome message to the client
+  socket.emit('message', 'Welcome to the server!');
+
+  // Listen for the client's disconnection
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
+
+});
+ */
+ 
+io.on('connection', (socket) => {
+
+  console.log('Connected');
+  console.log(socket.id);
+  console.log(socket.load);
+  console.log("JWT token test: ",socket.handshake.headers)
+
+  socket.on('event_name', (data, res) => {
+
+    console.log(`Message from Client (${socket.id}): `, data);
+
+    io.emit("Send Message io.emit Broadcasted : ", data);
+    socket.emit('enviar-mensaje', data);
+
+    socket.emit("updateitem", "1", { name: "updated" }, (response) => {
+      console.log(response.status); // ok
+    });
+  
+  })
+  
+  socket.on('disconnect', () => {
+
+    console.log('Disconnected');
+
+  })
+
+  socket.on('error', () => {
+    console.log('error desconocido');
+  })
+
+})
+
+
+
