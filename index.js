@@ -20,6 +20,13 @@ io.on('connection', (socket) => {
   });
 });
 
+io.on('connection', (socket) => {
+  console.log('Receieveing....');
+  socket.on('base', () => {
+    console.log('message sent');
+  });
+});
+
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
