@@ -71,6 +71,14 @@ io.on('connection', function(socket){
 			io.emit(ausr, msg);
 		}
 	});
+	// Receieved info from remote and sends to base
+
+	socket.on('message', function(msg){
+		io.emit('1969', msg);
+		io.emit('remote', msg);
+		console.log (msg);
+		return;
+	});
 });
 
 // Receieved info from remote and sends to base
@@ -80,12 +88,6 @@ io.on('connection', function(socket){
 		return;
 });
 
-// Receieved info from remote and sends to base
-io.on('connection', function(socket){
-	socket.on('message', function(msg){
-		io.emit('1969', msg);
-		return;
-});
 
 socket.on('disconnect', function () {
 	io.emit('remote', 'Customer left remote comm. '+this.id);
