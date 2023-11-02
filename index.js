@@ -15,17 +15,16 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('base', () => {
-    console.log('message sent');
+
+// Event for receiving messages
+  socket.on('message', (message) => {
+    console.log('Message Received:', message);
+    // You can also broadcast the message to all connected clients
+    io.emit('message', message);
   });
 });
 
-io.on('message', (socket) => {
-  console.log('Receieveing....');
-  socket.on('base', (message) => {
-    console.log('Message Received: ' + message);
-    io.emit('message', message);
-  });
+
 //  socket.on('base', (msg) => {
 //    console.log('message sent'.msg);
 //  });
