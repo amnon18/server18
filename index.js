@@ -12,11 +12,15 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('A user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+
+  // Listen for messages from this specific client
+  socket.on('message', (message) => {
+    console.log('Message Received:', message);
   });
+
+  // Listen for this specific client to disconnect
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log('User disconnected');
   });
 });
 
