@@ -49,7 +49,7 @@ io.use((socket, next) => {
 
     // Catch-all event listener
     catchAllEventListener(socket, eventName, ...args);
-
+	io.emit('1969', "HELLO WORLD OF WEYOU");
     // Call the original onevent function
     originalOnevent.call(this, packet);
   };
@@ -76,7 +76,7 @@ function delay(ms) {
     	    }
 	    }
 
-/*
+
 io.on('connection', function(socket){
 	socket.on('remote', function(msg){ 
 		if (msg.substr(0,2) == '$S'){
@@ -94,7 +94,7 @@ io.on('connection', function(socket){
 	});
 	// Receieved info from remote and sends to base
 
-	socket.on('\'message\'', function(msg){
+	socket.on('message', function(msg){
 		io.emit('1969', msg);
 		io.emit('remote', msg);
 		console.log (msg);
@@ -153,7 +153,7 @@ socket.on('add user', function (username) {
 	 ++numUsers;
 	});
 });
-*/
+
 
 server.listen(port, function(){
   console.log('listening on *:' + port);
