@@ -60,8 +60,10 @@ function catchAllEventListener(socket, eventName, ...args) {
   console.log('Catch-all event listener triggered');
   console.log('Event Name:', eventName);
   console.log('Arguments:', args);
-  
-  // You can add custom logic here to handle any event as needed
+  socket.on('1111', function(msg){ 
+  	console.log('Data sent:', msg);
+	console.log('Data2 sent:', args);
+	});
 }
 
 function delay(ms) {
