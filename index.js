@@ -76,7 +76,7 @@ function delay(ms) {
     	    }
 	    }
 
-
+/*
 io.on('connection', function(socket){
 	socket.on('remote', function(msg){ 
 		if (msg.substr(0,2) == '$S'){
@@ -153,7 +153,7 @@ socket.on('add user', function (username) {
 	 ++numUsers;
 	});
 });
-
+*/
 
 server.listen(port, function(){
   console.log('listening on *:' + port);
