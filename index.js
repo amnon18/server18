@@ -32,8 +32,6 @@ app.get('/base', function(req, res){
   res.sendFile(__dirname + '/base.html');
 });
 
-
-
 io.on('connection', function(socket){
 	socket.on('delayer', function(msg){ 
 		delay(1000);
@@ -73,7 +71,7 @@ io.on('connection', function(socket){
 	});
 	// Receieved info from remote and sends to base
 
-	socket.on('message', function(msg){
+	socket.on('\'message\'', function(msg){
 		io.emit('1969', msg);
 		io.emit('remote', msg);
 		console.log (msg);
