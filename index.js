@@ -41,6 +41,29 @@ io.on('connection', function(socket){
 	
 });
 
+io.use((socket, next) => {
+  const originalOnevent = socket.onevent;
+  socket.onevent = function (packet) {
+    const [eventName, ...args] = packet.data;
+    console.log(`Event received: ${eventName}`);
+
+    // Catch-all event listener
+    catchAllEventListener(socket, eventName, ...args);
+
+    // Call the original onevent function
+    originalOnevent.call(this, packet);
+  };
+  next();
+});
+
+function catchAllEventListener(socket, eventName, ...args) {
+  console.log('Catch-all event listener triggered');
+  console.log('Event Name:', eventName);
+  console.log('Arguments:', args);
+  
+  // You can add custom logic here to handle any event as needed
+}
+
 function delay(ms) {
 			var cur_d = new Date();
 			var cur_ticks = cur_d.getTime();
@@ -136,25 +159,3 @@ server.listen(port, function(){
   console.log('listening on *:' + port);
 });
 
-io.use((socket, next) => {
-  const originalOnevent = socket.onevent;
-  socket.onevent = function (packet) {
-    const [eventName, ...args] = packet.data;
-    console.log(`Event received: ${eventName}`);
-
-    // Catch-all event listener
-    catchAllEventListener(socket, eventName, ...args);
-
-    // Call the original onevent function
-    originalOnevent.call(this, packet);
-  };
-  next();
-});
-
-function catchAllEventListener(socket, eventName, ...args) {
-  console.log('Catch-all event listener triggered');
-  console.log('Event Name:', eventName);
-  console.log('Arguments:', args);
-  
-  // You can add custom logic here to handle any event as needed
-}
