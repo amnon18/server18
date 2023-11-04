@@ -151,7 +151,7 @@ socket.on('add user', function (username) {
 	socket.emit('remote', {
 	  numUsers: numUsers
 	});
-	io.emit('remote', 'Customer joined remote com.');
+	io.emit('remote', 'Customer joined remote com.'+username);
 	 ++numUsers;
 	});
 });
