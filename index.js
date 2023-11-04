@@ -132,7 +132,7 @@ socket.on('new', function(username) {
 	addedUser = true;
 	socket.username = username;
 	io.emit('remote', socket.username+' joined remote service.');
-	console.log('New AMNON18 connected'. socket.username);
+	console.log('New AMNON18 connected'+ socket.username);
 	numUsers++;
 	io.emit('remote', 'Number of clients online: '+numUsers);
 	io.emit('rid', username);
