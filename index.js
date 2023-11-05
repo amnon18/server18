@@ -66,6 +66,10 @@ function catchAllEventListener(socket, eventName, ...args) {
 	});
 }
 
+socket.on('amnon18', (data) => {
+    console.log('Data received:', data);
+});
+
 function delay(ms) {
 			var cur_d = new Date();
 			var cur_ticks = cur_d.getTime();
