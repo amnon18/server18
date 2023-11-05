@@ -60,7 +60,7 @@ function catchAllEventListener(socket, eventName, ...args) {
   console.log('Catch-all event listener triggered');
   console.log('Event Name:', eventName);
   console.log('Arguments:', args);
-  socket.on('1111', function(msg){ 
+  socket.on('amnno18', function(msg){ 
   	console.log('Data sent:', msg);
 	console.log('Data2 sent:', args);
 	});
