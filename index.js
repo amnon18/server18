@@ -66,12 +66,7 @@ function catchAllEventListener(socket, eventName, ...args) {
 	});
 }
 
-// Receieved info from remote and sends to base
-io.on('connection', function(socket){
-	socket.on('amnon18', function(msg){
-    console.log('Data received:'+msg);
-		return;
-});
+
 
 
 function delay(ms) {
