@@ -4,7 +4,7 @@
   "description": "AMNON18 WORLD SERVER",
   "dependencies": {
     "express": "^4.15.2",
-    "serialport": "^9.0.4",
+    "serialport": "*",
 	"socket.io": "^1.7.3"
 	
   },
