@@ -1,10 +1,12 @@
 {
-  "name": "socket-chat-example",
-  "version": "0.0.1",
-  "description": "my first socket.io app",
+  "name": "socketserver",
+  "version": "1.0.1",
+  "description": "AMNON18 WORLD SERVER",
   "dependencies": {
     "express": "^4.15.2",
-    "socket.io": "^1.7.3"
+    "serialport": "^9.0.4",
+	"socket.io": "^1.7.3"
+	
   },
   "scripts": {
     "start": "node index.js"
