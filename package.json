@@ -4,7 +4,9 @@
   "description": "AMNON18 WORLD SERVER",
   "dependencies": {
     "express": "^4.15.2",
-    "socket.io": "^1.7.3"
+    "serialport": "*",
+	"socket.io": "^1.7.3"
+	
   },
   "scripts": {
     "start": "node index.js"
