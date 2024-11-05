@@ -51,34 +51,35 @@
 		function A18login() {
 			socket.emit('new', login_id);
 		}
+	      
 		socket.on('disconnect', function () {
 			socket.emit('base', login_id);
 		    console.log('you have been disconnected');
 		});
 
 		$('form').submit(function(){
-          socket.emit('base', $('#m').val());
-          $('#m').val('');
-          return false;
-        });
+         		 socket.emit('base', $('#m').val());
+		          $('#m').val('');
+         		 return false;
+      		  });
 
 		socket.on('rid', function(msg){
 			if (login_id == '')
 				login_id = msg;
-        });
-	      
+        	});
 
-
-		
-        socket.on(login_id, function(msg){
+	      	socket.on(login_id, function(msg){
 			if (msg.substr(0,1) != '$'){
 				document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
 				var before2 = document.getElementById('messages').value;
 				if ((before2.length) > 2000) before2 = before2.substr(1000,before2.length);  
 				document.getElementById('messages').value = before2+msg+"\r";
 			}
-        });
+        	});
+
+	      
       });
+	  
       </script>
   </body>
 </html>
