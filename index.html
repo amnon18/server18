@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>AMNON18 Service Server V2</title>
+    <title>AMNON18 Web Interface V2</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -58,7 +58,7 @@
 		});
 
 		$('form').submit(function(){
-         		 socket.emit('base', $('#m').val());
+         		 socket.emit(login_id, $('#m').val());
 		          $('#m').val('');
          		 return false;
       		  });
