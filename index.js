@@ -83,7 +83,7 @@ function delay(ms) {
 
 
 io.on('connection', function(socket){
-	socket.on('remote', function(msg){ 
+	/*socket.on('remote', function(msg){ 
 		if (msg.substr(0,2) == '$S'){
 			ausr = msg.substr(2,4);
 			return;
@@ -97,7 +97,15 @@ io.on('connection', function(socket){
 			io.emit(ausr, msg);
 		}
 	});
+	*/
 	// Receieved info from remote and sends to base
+
+	socket.on('amnon18', function(msg){
+		io.emit('9047580230353', msg);
+		io.emit('remote', msg);
+		console.log (msg);
+		return;
+	});
 
 	socket.on('message', function(msg){
 		io.emit('9047580230353', msg);
