@@ -49,7 +49,7 @@ io.use((socket, next) => {
 
     // Catch-all event listener
     catchAllEventListener(socket, eventName, ...args);
-	io.emit('1969', "HELLO WORLD OF WEYOU");
+//	io.emit('1969', "HELLO WORLD OF WEYOU");
     // Call the original onevent function
     originalOnevent.call(this, packet);
   };
@@ -100,8 +100,15 @@ io.on('connection', function(socket){
 	// Receieved info from remote and sends to base
 
 	socket.on('message', function(msg){
-		io.emit('9047580230353', msg);
+		/io.emit('9047580230353', msg);
 		io.emit('remote', msg);
+		console.log (msg);
+		return;
+	});
+	
+	socket.on('amnon18', function(msg){
+		io.emit('9047580230353', msg);
+//		io.emit('remote', msg);
 		console.log (msg);
 		return;
 	});
@@ -137,8 +144,8 @@ socket.on('new', function(username) {
 	io.emit('remote', socket.username+' joined remote service.');
 	console.log('New AMNON18 connected'+ socket.username);
 	numUsers++;
-	io.emit('remote', 'Number of clients online: '+numUsers);
-	io.emit('rid', username);
+	//////io.emit('remote', 'Number of clients online: '+numUsers);
+	//////io.emit('rid', username);
 //	console.log(username);
 	clients[clientcount] =  socket.username;
 	clientsession[clientcount] =  socket.id;
