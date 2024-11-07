@@ -100,15 +100,8 @@ io.on('connection', function(socket){
 	// Receieved info from remote and sends to base
 
 	socket.on('message', function(msg){
-		/io.emit('9047580230353', msg);
-		io.emit('remote', msg);
-		console.log (msg);
-		return;
-	});
-	
-	socket.on('amnon18', function(msg){
 		io.emit('9047580230353', msg);
-//		io.emit('remote', msg);
+		io.emit('remote', msg);
 		console.log (msg);
 		return;
 	});
