@@ -58,7 +58,7 @@
 		});
 
 		$('form').submit(function(){
-         		 socket.emit(login_id, $('#m').val());
+         		 socket.emit('base', login_id+":"+$('#m').val());
 		          $('#m').val('');
          		 return false;
       		  });
