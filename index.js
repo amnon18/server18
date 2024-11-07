@@ -102,17 +102,18 @@ io.on('connection', function(socket){
 
 	socket.on('amnon18', function(msg){
 		io.emit('9047580230353', msg);
-		io.emit('remote', msg);
+		//io.emit('remote', msg);
 		console.log (msg);
 		return;
 	});
 
-	socket.on('message', function(msg){
+/*	socket.on('message', function(msg){
 		io.emit('9047580230353', msg);
 		io.emit('remote', msg);
 		console.log (msg);
 		return;
 	});
+*/	
 });
 
 // Receieved info from remote and sends to base
@@ -142,7 +143,7 @@ socket.on('new', function(username) {
 	
 	addedUser = true;
 	socket.username = username;
-	io.emit('remote', socket.username+' joined remote service.');
+	//io.emit('remote', socket.username+' joined remote service.');
 	console.log('New AMNON18 connected'+ socket.username);
 	numUsers++;
 	//////io.emit('remote', 'Number of clients online: '+numUsers);
@@ -163,7 +164,7 @@ socket.on('add user', function (username) {
 	socket.emit('remote', {
 	  numUsers: numUsers
 	});
-	io.emit('remote', 'Customer joined remote com.'+username);
+	//io.emit('remote', 'Customer joined remote com.'+username);
 	 ++numUsers;
 	});
 });
