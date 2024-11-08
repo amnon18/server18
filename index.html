@@ -35,6 +35,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.2.0/socket.io.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <form action="">
+	<input id="w" autocomplete="off">
         <textarea cols="170" rows="40" id="messages"></textarea>
         <input id="m" autocomplete="off"><button>Send</button>
    </form> 
@@ -58,7 +59,7 @@
 		});
 
 		$('form').submit(function(){
-         		 socket.emit('base', login_id+":"+$('#m').val());
+         		 socket.emit('base', $('#w').val()+":"+$('#m').val());
 		          $('#m').val('');
          		 return false;
       		  });
