@@ -136,6 +136,7 @@ socket.on('disconnect', function () {
 	numUsers--;
 	clientcount--;
 	if (numUsers<0) numUsers=0;
+	console.log('AMNON18 connected: '+ numUsers);
 	if (clientcount<0) clientcount=0;
 });
 
@@ -144,7 +145,7 @@ socket.on('new', function(username) {
 	addedUser = true;
 	socket.username = username;
 	//io.emit('remote', socket.username+' joined remote service.');
-	console.log('New AMNON18 connected'+ socket.username);
+	console.log('New AMNON18 connected: '+ socket.username);
 	numUsers++;
 	//////io.emit('remote', 'Number of clients online: '+numUsers);
 	//////io.emit('rid', username);
@@ -152,6 +153,7 @@ socket.on('new', function(username) {
 	clients[clientcount] =  socket.username;
 	clientsession[clientcount] =  socket.id;
 	clientcount++;
+	console.log('AMNON18 connected: '+ numUsers);
 });
 
 // when the client emits 'add user', this listens and executes
