@@ -99,14 +99,22 @@ io.on('connection', function(socket){
 	});
 	*/
 	// Receieved info from remote and sends to base
-
-	socket.on('amnon18', function(msg){
-		io.emit('9047580230353', 'got it');
-		//io.emit('remote', msg);
-		console.log (msg);
+	
+	socket.on('amnon18', function(msg) {
+		// Emit to a dynamic event name using the first 13 characters of msg
+		const eventName = msg.substring(0, 13);
+		io.emit(eventName, msg);
+	
 		return;
 	});
 
+/*	socket.on('amnon18', function(msg){
+			
+		io.emit('9047580230353', msg);
+
+		return;
+	});
+*/
 /*	socket.on('message', function(msg){
 		io.emit('9047580230353', msg);
 		io.emit('remote', msg);
