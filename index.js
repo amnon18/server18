@@ -81,7 +81,7 @@ function delay(ms) {
     	    }
 	    }
 
-
+/*
 io.on('connection', function(socket){
 	/*socket.on('remote', function(msg){ 
 		if (msg.substr(0,2) == '$S'){
@@ -100,7 +100,7 @@ io.on('connection', function(socket){
 	*/
 	// Receieved info from AMNON18 and sends to APP
 	
-	socket.on('amnon18', function(msg) {
+	/*socket.on('amnon18', function(msg) {
 		// Emit to a dynamic event name using the first 13 characters of msg
 		var eventName = msg.substring(1, 14);
 		console.log(eventName);
@@ -108,75 +108,72 @@ io.on('connection', function(socket){
 		return;
 	});
 
-/*	socket.on('amnon18', function(msg){
-			
-		io.emit('9047580230353', msg);
-
-		return;
-	});
-*/
-/*	socket.on('message', function(msg){
-		io.emit('9047580230353', msg);
-		io.emit('remote', msg);
-		console.log (msg);
-		return;
-	});
-*/	
 });
+
+*/
 
 /*	APP to AMNON18	*/
 // Receieved info from APP and send it directly the AMNON18 module
 io.on('connection', function(socket){
+	
+	socket.on('amnon18', function(msg) {
+		// Emit to a dynamic event name using the first 13 characters of msg
+		var eventName = msg.substring(1, 14);
+		console.log(eventName);
+		io.emit(eventName, msg);
+		return;
+	});
+	
 	socket.on('base', function(msg){
 		io.emit('event', msg);
 		return;
-});
-
-
-socket.on('disconnect', function () {
-	io.emit('remote', 'Customer left remote comm. '+this.id);
-	for (var r=0;r<=clientsession.length-1;r++){
-		if (clientsession[r] == this.id){
-			clientsession.splice(r, 1); 				
-			clients.splice(r, 1); 				
-		}
-	}
-	socket.disconnect(true);
-	numUsers--;
-	clientcount--;
-	if (numUsers<0) numUsers=0;
-	console.log('AMNON18 connected: '+ numUsers);
-	if (clientcount<0) clientcount=0;
-});
-
-socket.on('new', function(username) {
-	
-	addedUser = true;
-	socket.username = username;
-	//io.emit('remote', socket.username+' joined remote service.');
-	console.log('New AMNON18 connected: '+ socket.username);
-	numUsers++;
-	//////io.emit('remote', 'Number of clients online: '+numUsers);
-	//////io.emit('rid', username);
-//	console.log(username);
-	clients[clientcount] =  socket.username;
-	clientsession[clientcount] =  socket.id;
-	clientcount++;
-	console.log('AMNON18 connected: '+ numUsers);
-});
-
-// when the client emits 'add user', this listens and executes
-socket.on('add user', function (username) {
-	if (addedUser) return;
-	// we store the username in the socket session for this client
-	socket.username = username;
-	++numUsers;
-	addedUser = true;
-	socket.emit('remote', {
-	  numUsers: numUsers
 	});
-	//io.emit('remote', 'Customer joined remote com.'+username);
-	 ++numUsers;
+
+
+	socket.on('disconnect', function () {
+		io.emit('remote', 'Customer left remote comm. '+this.id);
+		for (var r=0;r<=clientsession.length-1;r++){
+			if (clientsession[r] == this.id){
+				clientsession.splice(r, 1); 				
+				clients.splice(r, 1); 				
+			}
+		}
+		socket.disconnect(true);
+		numUsers--;
+		clientcount--;
+		if (numUsers<0) numUsers=0;
+		console.log('AMNON18 connected: '+ numUsers);
+		if (clientcount<0) clientcount=0;
+	});
+
+	socket.on('new', function(username) {
+	
+		addedUser = true;
+		socket.username = username;
+		//io.emit('remote', socket.username+' joined remote service.');
+		console.log('New AMNON18 connected: '+ socket.username);
+		numUsers++;
+		//////io.emit('remote', 'Number of clients online: '+numUsers);
+		//////io.emit('rid', username);
+	//	console.log(username);
+		clients[clientcount] =  socket.username;
+		clientsession[clientcount] =  socket.id;
+		clientcount++;
+		console.log('AMNON18 connected: '+ numUsers);
+	});
+
+	// when the client emits 'add user', this listens and executes
+	socket.on('add user', function (username) {
+		if (addedUser) return;
+		// we store the username in the socket session for this client
+			socket.username = username;
+			++numUsers;
+			addedUser = true;
+			socket.emit('remote', {
+			  numUsers: numUsers
+			});
+		//io.emit('remote', 'Customer joined remote com.'+username);
+			 ++numUsers;
 	});
 });
 
