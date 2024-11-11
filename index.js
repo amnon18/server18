@@ -102,7 +102,7 @@ io.on('connection', function(socket){
 	
 	socket.on('amnon18', function(msg) {
 		// Emit to a dynamic event name using the first 13 characters of msg
-		const eventName = msg.substring(0, 13);
+		const eventName = msg.substring(1, 13);
 		io.emit(eventName, msg);
 	
 		return;
