@@ -42,13 +42,13 @@ io.on('connection', function(socket){
 });
 
 io.use((socket, next) => {
-  const originalOnevent = socket.onevent;
+  var originalOnevent = socket.onevent;
   socket.onevent = function (packet) {
     const [eventName, ...args] = packet.data;
     console.log(`Event received: ${eventName}`);
 
     // Catch-all event listener
- //////   catchAllEventListener(socket, eventName, ...args);
+   catchAllEventListener(socket, eventName, ...args);
 //	io.emit('1969', "HELLO WORLD OF WEYOU");
     // Call the original onevent function
     originalOnevent.call(this, packet);
