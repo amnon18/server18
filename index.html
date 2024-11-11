@@ -46,7 +46,9 @@
 		var socket = io();
 		var login_id = "9047580230353"; // Math.random();
 		//login_id = login_id.toString().substr(2,4);
-	
+		if ($('#w').val().length <= 0)
+			$('#w').val("0");
+	      
 		document.onload=A18login();
 
 		function A18login() {
