@@ -82,37 +82,55 @@ function delay(ms) {
 	    }
 
 
-io.on('connection', function(socket) {
-    
-    /* AMNON18 to APP */
-    // Received info from APP and send it directly to the AMNON18 module
-    socket.on('amnon18', function(msg) {
-        if (typeof msg === 'string' && msg.length >= 14) {
-            // Emit to a dynamic event name using the first 13 characters of msg
-            var eventName = msg.substring(1, 14);
-            console.log(eventName);
-            io.emit(eventName, msg);
-        } else {
-            console.error("Error: msg must be a string of at least 14 characters.");
-        }
-        return;
-    });
+io.on('connection', function(socket){
+	/*socket.on('remote', function(msg){ 
+		if (msg.substr(0,2) == '$S'){
+			ausr = msg.substr(2,4);
+			return;
+		}
+		if (msg.substr(0,2) == '$L'){
+		    io.emit('remote', "Clients online: "+numUsers);
+			for (var x=0;x<=clientsession.length-1;x++) {
+				io.emit('remote',  "Client ID: "+clients[x]+":"+clientsession[x]);
+			}
+		}else{
+			io.emit(ausr, msg);
+		}
+	});
+	*/
+	// Receieved info from AMNON18 and sends to APP
+	
+	socket.on('amnon18', function(msg) {
+		// Emit to a dynamic event name using the first 13 characters of msg
+		var eventName = msg.substring(1, 14);
+		console.log(eventName);
+		io.emit(eventName, msg);
+		return;
+	});
 
-    /* APP to AMNON18 */
-    // Received info from APP and send it directly to the AMNON18 module
-    socket.on('base', function(msg) {
-        if (typeof msg === 'string' && msg.length >= 13) {
-            var eventName = msg.substring(0, 13);
-            console.log(eventName);
-            io.emit(eventName, msg);
-        } else {
-            console.error("Error: msg must be a string of at least 13 characters.");
-        }
-        return;
-    });
+/*	socket.on('amnon18', function(msg){
+			
+		io.emit('9047580230353', msg);
+
+		return;
+	});
+*/
+/*	socket.on('message', function(msg){
+		io.emit('9047580230353', msg);
+		io.emit('remote', msg);
+		console.log (msg);
+		return;
+	});
+*/	
 });
 
-
+/*	APP to AMNON18	*/
+// Receieved info from APP and send it directly the AMNON18 module
+io.on('connection', function(socket){
+	socket.on('base', function(msg){
+		io.emit('event', msg);
+		return;
+});
 
 
 socket.on('disconnect', function () {
