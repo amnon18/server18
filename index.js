@@ -121,12 +121,12 @@ io.on('connection', function(socket){
 		var eventName = msg.substring(1, 14);
 		console.log(eventName);
 		io.emit(eventName, msg);
-		return;
+		
 	});
 	
 	socket.on('base', function(msg){
 		io.emit('event', msg);
-		return;
+		
 	});
 
 
@@ -161,7 +161,7 @@ io.on('connection', function(socket){
 		clientcount++;
 		console.log('AMNON18 connected: '+ numUsers);
 	});
-
+	/*
 	// when the client emits 'add user', this listens and executes
 	socket.on('add user', function (username) {
 		if (addedUser) return;
@@ -175,6 +175,7 @@ io.on('connection', function(socket){
 		//io.emit('remote', 'Customer joined remote com.'+username);
 			 ++numUsers;
 	});
+	*//
 });
 
 
