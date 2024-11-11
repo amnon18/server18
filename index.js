@@ -46,7 +46,6 @@ io.use((socket, next) => {
   socket.onevent = function (packet) {
     const [eventName, ...args] = packet.data;
     console.log(`Event received: ${eventName}`);
-
     // Catch-all event listener
    catchAllEventListener(socket, eventName, ...args);
     // Call the original onevent function
@@ -59,16 +58,17 @@ function catchAllEventListener(socket, eventName, ...args) {
 	console.log('Catch-all event listener triggered');
 	console.log('Event Name:', eventName);
 	console.log('Arguments:', args);
-
-	socket.on('amnno18', function(msg){ 
+/*
+	socket.on('amnon18', function(msg){ 
 	  	console.log('Data A18:', msg);
 		console.log('Data A18:', args);
 	});
+	
 	socket.on('base', function(msg){ 
 	  	console.log('Data APP:', msg);
 		console.log('Data APP:', args);
 	});
-
+*/
 }
 
 
@@ -126,12 +126,12 @@ io.on('connection', function(socket){
 		var eventName = msg.substring(1, 14);
 		console.log(eventName);
 		io.emit(eventName, msg);
-		
+		return;
 	});
 	
 	socket.on('base', function(msg){
 		io.emit('event', msg);
-		
+		return;	
 	});
 
 
