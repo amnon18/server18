@@ -98,15 +98,24 @@ io.on('connection', function(socket){
 		}
 	});
 	*/
-	// Receieved info from remote and sends to base
+	// Receieved info from AMNON18 and sends to APP
 	
+	/*	AMNON18 to APP	*/
+	// Receieved info from APP and send it directly the AMNON18 module
 	socket.on('amnon18', function(msg) {
 		// Emit to a dynamic event name using the first 13 characters of msg
 		var eventName = msg.substring(1, 14);
 		console.log(eventName);
 		io.emit(eventName, msg);
-	
 		return;
+	});
+
+	/*	APP to AMNON18	*/
+	// Receieved info from APP and send it directly the AMNON18 module
+	io.on('connection', function(socket){
+		socket.on('base', function(msg){
+			io.emit('event', msg);
+			return;
 	});
 
 /*	socket.on('amnon18', function(msg){
@@ -125,13 +134,7 @@ io.on('connection', function(socket){
 */	
 });
 
-/*	APP to AMNON18	*/
-// Receieved info from APP and send it directly the AMNON18 module
-io.on('connection', function(socket){
-	socket.on('base', function(msg){
-		io.emit('event', msg);
-		return;
-});
+
 
 
 socket.on('disconnect', function () {
