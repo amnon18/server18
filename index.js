@@ -113,7 +113,7 @@ io.on('connection', function(socket){
 	/*	APP to AMNON18	*/
 	// Receieved info from APP and send it directly the AMNON18 module
 	socket.on('base', function(msg){
-		var eventName = msg.substring(13);
+		var eventName = msg.substring(0, 13);
 		console.log(eventName);
 		io.emit(eventName, msg);
 		return;
@@ -129,7 +129,7 @@ io.on('connection', function(socket){
 	
 		/*	APP to AMNON18	*/
 	// Receieved info from APP and send it directly the AMNON18 module
-	io.on('connection', function(socket){
+/*	io.on('connection', function(socket){
 		socket.on('base', function(msg){
 			io.emit('event', msg);
 			return;
