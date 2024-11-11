@@ -49,7 +49,6 @@ io.use((socket, next) => {
 
     // Catch-all event listener
    catchAllEventListener(socket, eventName, ...args);
-//	io.emit('1969', "HELLO WORLD OF WEYOU");
     // Call the original onevent function
     originalOnevent.call(this, packet);
   }; 
@@ -57,13 +56,19 @@ io.use((socket, next) => {
 });
 
 function catchAllEventListener(socket, eventName, ...args) {
-  console.log('Catch-all event listener triggered');
-  console.log('Event Name:', eventName);
-  console.log('Arguments:', args);
-  socket.on('amnno18', function(msg){ 
-  	console.log('Data sent:', msg);
-	console.log('Data2 sent:', args);
+	console.log('Catch-all event listener triggered');
+	console.log('Event Name:', eventName);
+	console.log('Arguments:', args);
+
+	socket.on('amnno18', function(msg){ 
+	  	console.log('Data A18:', msg);
+		console.log('Data A18:', args);
 	});
+	socket.on('base', function(msg){ 
+	  	console.log('Data APP:', msg);
+		console.log('Data APP:', args);
+	});
+
 }
 
 
