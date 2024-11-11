@@ -103,6 +103,7 @@ io.on('connection', function(socket){
 	socket.on('amnon18', function(msg) {
 		// Emit to a dynamic event name using the first 13 characters of msg
 		const eventName = msg.substring(1, 13);
+		console.log(eventName);
 		io.emit(eventName, msg);
 	
 		return;
@@ -124,7 +125,8 @@ io.on('connection', function(socket){
 */	
 });
 
-// Receieved info from remote and sends to base
+/*	APP to AMNON18	*/
+// Receieved info from APP and send it directly the AMNON18 module
 io.on('connection', function(socket){
 	socket.on('base', function(msg){
 		io.emit('event', msg);
