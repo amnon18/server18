@@ -56,6 +56,7 @@ io.use((socket, next) => {
   next();
 });
 
+/*
 function catchAllEventListener(socket, eventName, ...args) {
   console.log('Catch-all event listener triggered');
   console.log('Event Name:', eventName);
@@ -65,7 +66,7 @@ function catchAllEventListener(socket, eventName, ...args) {
 	console.log('Data2 sent:', args);
 	});
 }
-
+*/
 
 
 
@@ -175,7 +176,7 @@ io.on('connection', function(socket){
 		//io.emit('remote', 'Customer joined remote com.'+username);
 			 ++numUsers;
 	});
-	*//
+	*/
 });
 
 
