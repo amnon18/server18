@@ -112,10 +112,11 @@ io.on('connection', function(socket){
 
 	/*	APP to AMNON18	*/
 	// Receieved info from APP and send it directly the AMNON18 module
-	io.on('connection', function(socket){
-		socket.on('base', function(msg){
-			io.emit('event', msg);
-			return;
+	socket.on('base', function(msg){
+		var eventName = msg.substring(13);
+		console.log(eventName);
+		io.emit(eventName, msg);
+		return;
 	});
 
 /*	socket.on('amnon18', function(msg){
@@ -124,6 +125,16 @@ io.on('connection', function(socket){
 
 		return;
 	});
+	
+	
+		/*	APP to AMNON18	*/
+	// Receieved info from APP and send it directly the AMNON18 module
+	io.on('connection', function(socket){
+		socket.on('base', function(msg){
+			io.emit('event', msg);
+			return;
+	});
+	
 */
 /*	socket.on('message', function(msg){
 		io.emit('9047580230353', msg);
