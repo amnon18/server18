@@ -52,7 +52,7 @@ io.use((socket, next) => {
 //	io.emit('1969', "HELLO WORLD OF WEYOU");
     // Call the original onevent function
     originalOnevent.call(this, packet);
-  };
+  }; 
   next();
 });
 
@@ -127,7 +127,7 @@ io.on('connection', function(socket){
 // Receieved info from remote and sends to base
 io.on('connection', function(socket){
 	socket.on('base', function(msg){
-		io.emit('remote', msg);
+		io.emit('event', msg);
 		return;
 });
 
