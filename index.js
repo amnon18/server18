@@ -130,10 +130,15 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('base', function(msg){
-		var WorldCommandName = msg.substring(15, 19);
+		var WorldCommandName = msg.substring(14, 21);
 		console.log(WorldCommandName);
-		io.emit('event', msg);
+		if (WorldCommandName == "pingall"){
+			io.emit('ping', "");			
+		}else{
+			io.emit('event', msg);
+		}
 		return;	
+			
 	});
 
 
