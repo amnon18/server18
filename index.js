@@ -130,6 +130,8 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('base', function(msg){
+		var WorldCommandName = msg.substring(15, 19);
+		console.log(WorldCommandName);
 		io.emit('event', msg);
 		return;	
 	});
