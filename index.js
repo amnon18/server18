@@ -58,17 +58,6 @@ function catchAllEventListener(socket, eventName, ...args) {
 	console.log('Catch-all event listener triggered');
 	console.log('Event Name:', eventName);
 	console.log('Arguments:', args);
-/*
-	socket.on('amnon18', function(msg){ 
-	  	console.log('Data A18:', msg);
-		console.log('Data A18:', args);
-	});
-	
-	socket.on('base', function(msg){ 
-	  	console.log('Data APP:', msg);
-		console.log('Data APP:', args);
-	});
-*/
 }
 
 
@@ -85,37 +74,6 @@ function delay(ms) {
 				// d = null;  // Prevent memory leak?
     	    }
 	    }
-
-/*
-io.on('connection', function(socket){
-	/*socket.on('remote', function(msg){ 
-		if (msg.substr(0,2) == '$S'){
-			ausr = msg.substr(2,4);
-			return;
-		}
-		if (msg.substr(0,2) == '$L'){
-		    io.emit('remote', "Clients online: "+numUsers);
-			for (var x=0;x<=clientsession.length-1;x++) {
-				io.emit('remote',  "Client ID: "+clients[x]+":"+clientsession[x]);
-			}
-		}else{
-			io.emit(ausr, msg);
-		}
-	});
-	*/
-	// Receieved info from AMNON18 and sends to APP
-	
-	/*socket.on('amnon18', function(msg) {
-		// Emit to a dynamic event name using the first 13 characters of msg
-		var eventName = msg.substring(1, 14);
-		console.log(eventName);
-		io.emit(eventName, msg);
-		return;
-	});
-
-});
-
-*/
 
 /*	APP to AMNON18	*/
 // Receieved info from APP and send it directly the AMNON18 module
@@ -145,11 +103,12 @@ io.on('connection', function(socket){
 			io.emit('pingall', "");
 			return;			
 		}
-		if (WorldCommandName == "pingone"){
+/*		if (WorldCommandName == "pingone"){
 			console.log("In pingone");
 			io.emit('ping', eventName);
 			return;			
 		}
+*/		
 		console.log("In regular");
 		io.emit('event', msg);
 		return;	
