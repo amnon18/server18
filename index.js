@@ -103,12 +103,12 @@ io.on('connection', function(socket){
 			io.emit('pingall', "");
 			return;			
 		}
-/*		if (WorldCommandName == "pingone"){
+		if (WorldCommandName == "pingone"){
 			console.log("In pingone");
 			io.emit('ping', eventName);
 			return;			
 		}
-*/		
+		
 		console.log("In regular");
 		io.emit('event', msg);
 		return;	
