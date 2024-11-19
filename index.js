@@ -114,6 +114,17 @@ io.on('connection', function(socket){
 		return;	
 			
 	});
+	
+	socket.on('console', function(msg) {
+		// Emit to a dynamic event name using the first 13 characters of msg
+		var eventName = msg.substring(1, 14);
+		console.log("EVENT:");
+		console.log(eventName);
+		console.log("Console info:");
+		console.log(eventName);
+		io.emit(eventName, msg);
+		return;
+	});
 
 
 	socket.on('disconnect', function () {
