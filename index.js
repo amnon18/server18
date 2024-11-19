@@ -133,14 +133,19 @@ io.on('connection', function(socket){
 		var eventName = msg.substring(1, 14);
 		var WorldCommandName = msg.substring(14, 21);
 		console.log(WorldCommandName);
+		console.log(eventName);
+		
 		if (WorldCommandName == "pingall"){
+			console.log("In pingall");
 			io.emit('pingall', "");
 			return;			
 		}
 		if (WorldCommandName == "pingone"){
+			console.log("In pingone");
 			io.emit('ping', eventName);
 			return;			
 		}
+		console.log("In regular");
 		io.emit('event', msg);
 		return;	
 			
