@@ -31,6 +31,9 @@ app.get('/', function(req, res){
 app.get('/base', function(req, res){
   res.sendFile(__dirname + '/base.html');
 });
+app.get('/console', function(req, res){
+  res.sendFile(__dirname + '/console.html');
+});
 
 io.on('connection', function(socket){
 	socket.on('delayer', function(msg){ 
@@ -126,8 +129,53 @@ io.on('connection', function(socket){
 		return;
 	});
 
+	 socket.on('new', function(username) {
+			socket.username = username;
+			clients.push(username); // Add the user to the clients array
+			clientsession.push(socket.id);
+			clientcount++;
+			console.log('New user connected:', username);
+			io.emit('updateUserList', clients); // Emit the updated user list
+		});
+	
+		// Remove user on disconnect and send updated user list
+		socket.on('disconnect', function () {
+			const index = clientsession.indexOf(socket.id);
+			if (index !== -1) {
+				const removedUser = clients[index];
+				clients.splice(index, 1);
+				clientsession.splice(index, 1);
+				clientcount--;
+				console.log('User disconnected:', removedUser);
+				io.emit('updateUserList', clients); // Emit the updated user list
+			}
+		});
 
-	socket.on('disconnect', function () {
+	
+	/*
+	// when the client emits 'add user', this listens and executes
+	socket.on('add user', function (username) {
+		if (addedUser) return;
+		// we store the username in the socket session for this client
+			socket.username = username;
+			++numUsers;
+			addedUser = true;
+			socket.emit('remote', {
+			  numUsers: numUsers
+			});
+		//io.emit('remote', 'Customer joined remote com.'+username);
+			 ++numUsers;
+	});
+	*/
+});
+
+
+server.listen(port, function(){
+  console.log('listening on *:' + port);
+});
+
+/*
+socket.on('disconnect', function () {
 		io.emit('remote', 'Customer left remote comm. '+this.id);
 		for (var r=0;r<=clientsession.length-1;r++){
 			if (clientsession[r] == this.id){
@@ -158,25 +206,4 @@ io.on('connection', function(socket){
 		clientcount++;
 		console.log('AMNON18 connected: '+ numUsers);
 	});
-	/*
-	// when the client emits 'add user', this listens and executes
-	socket.on('add user', function (username) {
-		if (addedUser) return;
-		// we store the username in the socket session for this client
-			socket.username = username;
-			++numUsers;
-			addedUser = true;
-			socket.emit('remote', {
-			  numUsers: numUsers
-			});
-		//io.emit('remote', 'Customer joined remote com.'+username);
-			 ++numUsers;
-	});
 	*/
-});
-
-
-server.listen(port, function(){
-  console.log('listening on *:' + port);
-});
-
