@@ -99,7 +99,7 @@ io.on('connection', function(socket){
 		console.log("COMMAND:");
 		console.log(WorldCommandName);
 		console.log("EVENT:");
-		console.log(eventName);d
+		console.log(eventName);
 		
 		if (WorldCommandName == "pingall"){
 			console.log("In pingall");
