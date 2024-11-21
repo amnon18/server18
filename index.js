@@ -139,15 +139,30 @@ io.on('connection', function(socket){
 		});
 	
 		// Remove user on disconnect and send updated user list
+		
 		socket.on('disconnect', function () {
-			const index = clientsession.indexOf(socket.id);
+			const index = clientsession.indexOf(socket.id); // Find the session index of the disconnected user
 			if (index !== -1) {
-				const removedUser = clients[index];
+				const removedUser = clients[index]; // Get the username of the disconnected user
+				console.log(`User disconnected: ${removedUser}`);
+		
+				// Remove user details from the arrays
 				clients.splice(index, 1);
 				clientsession.splice(index, 1);
+		
+				// Decrement counters
 				clientcount--;
-				console.log('User disconnected:', removedUser);
-				io.emit('updateUserList', clients); // Emit the updated user list
+				numUsers--;
+		
+				// Ensure counters don't go below zero
+				clientcount = Math.max(clientcount, 0);
+				numUsers = Math.max(numUsers, 0);
+		
+				// Notify all connected clients about the updated user list
+				io.emit('updateUserList', clients);
+		
+				console.log(`Current connected users: ${clients}`);
+				console.log(`Number of users connected: ${numUsers}`);
 			}
 		});
 
