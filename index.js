@@ -1,6 +1,10 @@
 var app = require('express')();
 var server = require('http').createServer(app);    //var http = require('http').Server(app);
-var io = require('socket.io')(server);             //var io = require('socket.io')(http);
+//var io = require('socket.io')(server);             //var io = require('socket.io')(http);
+var io = require('socket.io')(server, {
+   // pingInterval: 10000, // Send a ping every 10 seconds
+    pingTimeout: 5000    // Disconnect if no pong is received within 5 seconds
+});
 var port = process.env.PORT || 4000;
 
 //************************************************
@@ -22,6 +26,7 @@ res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Ty
 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 next();
 });
+
 
 
 app.get('/', function(req, res){
