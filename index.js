@@ -95,11 +95,11 @@ io.on('connection', function(socket){
 	
 	socket.on('base', function(msg){
 		var eventName = msg.substring(0, 13);
-		var WorldCommandName = msg.substring(14, 21);
+		var WorldCommandName = msg.substring(13, 20);
 		console.log("COMMAND:");
 		console.log(WorldCommandName);
 		console.log("EVENT:");
-		console.log(eventName);
+		console.log(eventName);d
 		
 		if (WorldCommandName == "pingall"){
 			console.log("In pingall");
@@ -165,23 +165,6 @@ io.on('connection', function(socket){
 				console.log(`Number of users connected: ${numUsers}`);
 			}
 		});
-
-	
-	/*
-	// when the client emits 'add user', this listens and executes
-	socket.on('add user', function (username) {
-		if (addedUser) return;
-		// we store the username in the socket session for this client
-			socket.username = username;
-			++numUsers;
-			addedUser = true;
-			socket.emit('remote', {
-			  numUsers: numUsers
-			});
-		//io.emit('remote', 'Customer joined remote com.'+username);
-			 ++numUsers;
-	});
-	*/
 });
 
 
