@@ -116,6 +116,11 @@ io.on('connection', function(socket){
 			io.emit('pingone', eventName);
 			return;			
 		}
+		if (WorldCommandName == "refresh"){
+			console.log("In refresh");
+			io.emit('refresh', eventName);
+			return;			
+		}
 		
 		console.log("In regular");
 		io.emit('event', msg);
