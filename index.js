@@ -37,7 +37,7 @@ app.get('/base', function(req, res){
   res.sendFile(__dirname + '/base.html');
 });
 app.get('/console', function(req, res){
-  res.sendFile(__dirname + '/console.php');
+  res.sendFile(__dirname + '/console.html');
 });
 
 io.on('connection', function(socket){
