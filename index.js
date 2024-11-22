@@ -92,8 +92,6 @@ io.on('connection', function(socket){
 		var eventName = msg.substring(1, 14);
 		console.log("EVENT:");
 		console.log(eventName);
-
-		console.log(eventName);
 		io.emit(eventName, msg);
 		return;
 	});
