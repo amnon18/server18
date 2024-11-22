@@ -113,7 +113,7 @@ io.on('connection', function(socket){
 		}
 		if (WorldCommandName == "pingone"){
 			console.log("In pingone");
-			io.emit('ping', eventName);
+			io.emit('pingone', eventName);
 			return;			
 		}
 		
