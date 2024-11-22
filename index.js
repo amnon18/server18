@@ -118,6 +118,10 @@ io.on('connection', function(socket){
 		}
 		if (WorldCommandName == "refresh"){
 			console.log("In refresh");
+			clientcount = 0;
+			numUsers =  0;
+			clients = [];
+			clientsession = [];
 			io.emit('refresh', eventName);
 			return;			
 		}
