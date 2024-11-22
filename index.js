@@ -99,8 +99,8 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('base', function(msg){
-		var eventName = msg.substring(0, 13);
-		var WorldCommandName = msg.substring(13, 20);
+		var eventName = msg.substring(0, 12);
+		var WorldCommandName = msg.substring(12, 18);
 		console.log("COMMAND:");
 		console.log(WorldCommandName);
 		console.log("EVENT:");
@@ -125,7 +125,7 @@ io.on('connection', function(socket){
 	
 	socket.on('console', function(msg) {
 		// Emit to a dynamic event name using the first 13 characters of msg
-		var eventName = msg.substring(1, 14);
+		var eventName = msg.substring(1, 13);
 		console.log("EVENT:");
 		console.log(eventName);
 		console.log("Console info:");
