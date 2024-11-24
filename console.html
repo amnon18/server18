@@ -45,12 +45,15 @@
 					if (data.error) {
 						var li = document.createElement('li');
 						li.textContent = "N/A"; //data.error; 
-//						userList.appendChild(li);
+						userList.appendChild(li);
 					} else {
 						data.forEach(user => {
-							var li = document.createElement('li');
-							li.textContent = `${user[4] || 'N/A'} - ${user[1] || 'N/A'} - ${user[2] || 'N/A'}`;
-							userList.appendChild(li);
+							if (!document.querySelector(`li[data-user="${user[1]}"]`)) {
+                        var li = document.createElement('li');
+                        li.textContent = `${user[4] || 'N/A'} - ${user[1] || 'N/A'} - ${user[2] || 'N/A'}`;
+                        li.setAttribute('data-user', user[1]); // Use a unique identifier
+                        userList.appendChild(li);
+                    }
 						});
 					}
 				})
