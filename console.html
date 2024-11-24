@@ -45,7 +45,7 @@
 		
 					if (data.error) {
 						const li = document.createElement('li');
-						li.textContent = data.error;
+						li.textContent = "N/A"; //data.error; 
 						userList.appendChild(li);
 					} else {
 						data.forEach(user => {
