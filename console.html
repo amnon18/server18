@@ -32,6 +32,8 @@
     </ul>
 
 <script>
+header('Access-Control-Allow-Origin: *');
+
 	// Function to fetch user data from the server
 		function fetchUserData(user) {
 			const url = "https://amnon18.net/ConsoleFetchInfo.php?user=${encodeURIComponent(user)}";
