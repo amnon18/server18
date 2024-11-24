@@ -35,7 +35,7 @@
 
 	// Function to fetch user data from the server
 		function fetchUserData(user) {
-			var url = "https://amnon18.net/ConsoleFetchInfo.php?user=${encodeURIComponent(user)}";
+			var url = `https:\/\/amnon18.net/ConsoleFetchInfo.php?user=${encodeURIComponent(user)}`;
 			console.log (url);
 			fetch(url)
 				.then(response => response.json())
