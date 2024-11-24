@@ -50,7 +50,8 @@
 					} else {
 						data.forEach(user => {
 							var li = document.createElement('li');
-							li.textContent = `${user[4]} - ${user[1]} - ${user[2]}`;
+							li.textContent = `${user[4] || 'N/A'} - ${user[1] || 'N/A'} - ${user[2] || 'N/A'}`;
+//							li.textContent = `${user[4]} - ${user[1]} - ${user[2]}`;
 							userList.appendChild(li);
 						});
 					}
