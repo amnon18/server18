@@ -40,8 +40,7 @@
 			fetch(url)
 				.then(response => response.json())
 				.then(data => {
-					var userList = document.getElementById('userList');
-					userList.innerHTML = ''; // Clear the list
+					
 		
 					if (data.error) {
 						var li = document.createElement('li');
@@ -66,6 +65,8 @@
 		
 		// When users are updated, fetch data from the database for each user
 		socket.on('updateUserList', function(users) {
+			var userList = document.getElementById('userList');
+			userList.innerHTML = ''; // Clear the list
 			users.forEach(user => fetchUserData(user));
 		});
 
