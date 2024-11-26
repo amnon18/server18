@@ -111,7 +111,7 @@
     // Handle the `UPDATEONE` event to update the last cell of an existing user
     socket.on('updateone', function(oneuser) {
     // Extract the first 13 characters of the userId
-    var userIdShort = oneuser.userId.substring(0, 13);
+    var userIdShort = oneuser.substring(0, 13);
 
     // Check if a row with this userId exists
     var existingRow = document.querySelector(`tr[data-user^="${userIdShort}"]`); // Use `^=` for starts-with selector

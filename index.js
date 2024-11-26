@@ -148,7 +148,7 @@ io.on('connection', function(socket){
 		console.log("EVENT:");
 		console.log(eventName);
 		console.log("Console info:");
-		console.log(eventName);
+		console.log(eventTemperature);
 		io.emit('updateone', msg);
 		return;
 	});
