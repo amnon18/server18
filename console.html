@@ -66,11 +66,11 @@
                 } else {
                     data.forEach(user => {
                         // Check if the user already exists in the table
-                        var existingRow = document.querySelector(`tr[data-user="${user[1]}"]`);
+                        var existingRow = document.querySelector(`tr[data-user="${user[4]}"]`);
                         if (!existingRow) {
                             var tableBody = document.getElementById('userTableBody');
                             var row = document.createElement('tr');
-                            row.setAttribute('data-user', user[1]); // Use a unique identifier
+                            row.setAttribute('data-user', user[4]); // Use a unique identifier
 
                             // Add cells for user data
                             var columns = [
