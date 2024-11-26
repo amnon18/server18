@@ -50,7 +50,7 @@
 						data.forEach(user => {
 							if (!document.querySelector(`li[data-user="${user[1]}"]`)) {
                         var li = document.createElement('li');
-                        li.textContent = `${user[4] || 'N/A'} - ${user[1] || 'N/A'} - ${user[2] || 'N/A'}`;
+                        li.textContent = `${user[4] || 'N/A'} - ${user[10] || 'N/A'} - ${user[11] || 'N/A'} - ${user[9] || 'N/A'} - ${user[12] || 'N/A'} - ${user[13] || 'N/A'}`;
                         li.setAttribute('data-user', user[1]); // Use a unique identifier
                         userList.appendChild(li);
                     }
