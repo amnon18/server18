@@ -112,7 +112,7 @@
     socket.on('updateone', function(oneuser) {
     // Extract the first 13 characters of the userId
     var userIdShort = oneuser.substring(2, 15);
-
+	console.log(userIdShort);
     // Check if a row with this userId exists
     var existingRow = document.querySelector(`tr[data-user^="${userIdShort}"]`); // Use `^=` for starts-with selector
 
