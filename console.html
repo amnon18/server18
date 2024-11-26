@@ -110,17 +110,23 @@
 
     // Handle the `UPDATEONE` event to update the last cell of an existing user
     socket.on('updateone', function(oneuser) {
-        var existingRow = document.querySelector(`tr[data-user="${oneuser.userId}"]`);
-        if (existingRow) {
-            // Update the last cell of the existing row
-            var cells = existingRow.getElementsByTagName('td');
-            if (cells.length > 0) {
-                cells[cells.length - 1].textContent = oneuser.content || 'N/A';
-            }
-        } else {
-            console.warn(`User with ID ${oneuser.userId} not found in the table.`);
+    // Extract the first 13 characters of the userId
+    var userIdShort = oneuser.userId.substring(0, 13);
+
+    // Check if a row with this userId exists
+    var existingRow = document.querySelector(`tr[data-user^="${userIdShort}"]`); // Use `^=` for starts-with selector
+
+    if (existingRow) {
+        // Update the last cell of the existing row
+        var cells = existingRow.getElementsByTagName('td');
+        if (cells.length > 0) {
+            cells[cells.length - 1].textContent = oneuser.content || 'N/A';
         }
-    });
+    } else {
+        console.warn(`User with ID starting with ${userIdShort} not found in the table.`);
+    }
+});
+
 </script>
 
 </body>
