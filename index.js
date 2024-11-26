@@ -20,7 +20,7 @@ var ausr = ''; //Active user
 // Allow access control for web requests
 
 app.use(function(req, res, next) {
- res.header("Access-Control-Allow-Origin", "*");
+res.header("Access-Control-Allow-Origin", "*");
 res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -138,6 +138,18 @@ io.on('connection', function(socket){
 		console.log("Console info:");
 		console.log(eventName);
 		io.emit(eventName, msg);
+		return;
+	});
+	
+	socket.on('updconsole', function(msg) {
+		// Emit to a dynamic event name using the first 13 characters of msg
+		var eventName = msg.substring(2, 14);
+//		var eventTemperature = msg.substring(13, 6);
+		console.log("EVENT:");
+		console.log(eventName);
+		console.log("Console info:");
+		console.log(eventName);
+		io.emit('updateone', msg);
 		return;
 	});
 
