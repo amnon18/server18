@@ -120,7 +120,7 @@
         // Update the last cell of the existing row
         var cells = existingRow.getElementsByTagName('td');
         if (cells.length > 0) {
-            cells[cells.length - 1].textContent = oneuser.content || 'N/A';
+            cells[cells.length - 1].textContent = oneuser.substring(14, 19); || 'N/A';
         }
     } else {
         console.warn(`User with ID starting with ${userIdShort} not found in the table.`);
