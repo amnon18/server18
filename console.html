@@ -27,64 +27,84 @@
 </head>
 <body>
     <h1>Connected Users</h1>
+    <table border="1" style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+            <th>Column 4</th>
+            <th>Column 5</th>
+            <th>Column 6</th>
+        </tr>
+    </thead>
+    <tbody id="userTableBody">
+        <!-- Rows will be dynamically added here -->
+    </tbody>
+</table>
+    
     <ul id="userList">
         <!-- Users will be dynamically added here -->
     </ul>
 
 <script>
+    // Function to fetch user data from the server
+    function fetchUserData(user) {
+        var url = `https:\/\/amnon18.net/Webapp/ConsoleFetchInfo.php?user=${encodeURIComponent(user)}`;
+        console.log(url);
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    var tableBody = document.getElementById('userTableBody');
+                    var row = document.createElement('tr');
+                    var cell = document.createElement('td');
+                    cell.colSpan = 6; // Span across all columns
+                    cell.textContent = "N/A"; // Display the error
+                    row.appendChild(cell);
+                    tableBody.appendChild(row);
+                } else {
+                    data.forEach(user => {
+                        // Check if the user already exists in the table
+                        if (!document.querySelector(`tr[data-user="${user[1]}"]`)) {
+                            var tableBody = document.getElementById('userTableBody');
+                            var row = document.createElement('tr');
+                            row.setAttribute('data-user', user[1]); // Use a unique identifier
 
-	// Function to fetch user data from the server
-		function fetchUserData(user) {
-			var url = `https:\/\/amnon18.net/Webapp/ConsoleFetchInfo.php?user=${encodeURIComponent(user)}`;
-			console.log (url);
-			fetch(url)
-				.then(response => response.json())
-				.then(data => {
-					
-		
-					if (data.error) {
-						var li = document.createElement('li');
-						li.textContent = "N/A"; //data.error; 
-						userList.appendChild(li);
-					} else {
-						data.forEach(user => {
-							if (!document.querySelector(`li[data-user="${user[1]}"]`)) {
-                        var li = document.createElement('li');
-                        li.textContent = `${user[4] || 'N/A'} - ${user[10] || 'N/A'} - ${user[11] || 'N/A'} - ${user[9] || 'N/A'} - ${user[12] || 'N/A'} - ${user[13] || 'N/A'}`;
-                        li.setAttribute('data-user', user[1]); // Use a unique identifier
-                        userList.appendChild(li);
-                    }
-						});
-					}
-				})
-				.catch(error => {
-					console.error('Error fetching user data:', error);
-				});
-		}
-		
-		// Example usage: Fetch data for a specific user
-		const socket = io();
-		
-		// When users are updated, fetch data from the database for each user
-		socket.on('updateUserList', function(users) {
-			var userList = document.getElementById('userList');
-			userList.innerHTML = ''; // Clear the list
-			users.forEach(user => fetchUserData(user));
-		});
+                            // Add cells for user data
+                            var columns = [
+                                user[4] || 'N/A',  // Example column 1
+                                user[10] || 'N/A', // Example column 2
+                                user[11] || 'N/A', // Example column 3
+                                user[9] || 'N/A',  // Example column 4
+                                user[12] || 'N/A', // Example column 5
+                                user[13] || 'N/A'  // Example column 6
+                            ];
 
-   /*     const socket = io();
+                            columns.forEach(col => {
+                                var cell = document.createElement('td');
+                                cell.textContent = col;
+                                row.appendChild(cell);
+                            });
 
-        // Update user list on receiving data
-        socket.on('updateUserList', function(users) {
-            const userList = document.getElementById('userList');
-            userList.innerHTML = ''; // Clear the list
-            users.forEach(user => {
-                const li = document.createElement('li');
-                li.textContent = user;
-                userList.appendChild(li);
+                            tableBody.appendChild(row);
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
             });
-        });
-    */
-    </script>
-</body>
+    }
+
+    // Example usage: Fetch data for a specific user
+    const socket = io();
+
+    // When users are updated, fetch data from the database for each user
+    socket.on('updateUserList', function(users) {
+        var tableBody = document.getElementById('userTableBody');
+        tableBody.innerHTML = ''; // Clear the table
+        users.forEach(user => fetchUserData(user));
+    });
+</script></body>
 </html>
