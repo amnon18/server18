@@ -143,7 +143,7 @@ io.on('connection', function(socket){
 	
 	socket.on('updconsole', function(msg) {
 		// Emit to a dynamic event name using the first 13 characters of msg
-		var eventName = msg.substring(2, 14);
+		var eventName = msg.substring(2, 15);
 //		var eventTemperature = msg.substring(13, 6);
 		console.log("EVENT:");
 		console.log(eventName);
