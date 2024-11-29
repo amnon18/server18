@@ -114,6 +114,17 @@ io.on('connection', function(socket){
 			io.emit('pingone', eventName);
 			return;			
 		}
+		if (WorldCommandName == "ping0tx"){
+			console.log("In pingotx");
+			io.emit('ping0tx', eventName);
+			return;			
+		}
+		if (WorldCommandName == "ping1tx"){
+			console.log("In ping1tx");
+			io.emit('ping1tx', eventName);
+			return;			
+		}
+
 		if (WorldCommandName == "refresh"){
 			console.log("In refresh");
 			clientcount = 0;
