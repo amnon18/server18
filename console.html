@@ -120,7 +120,12 @@
         // Update the last cell of the existing row
         var cells = existingRow.getElementsByTagName('td');
         if (cells.length > 0) {
-            cells[cells.length - 1].textContent = oneuser.substring(16) || 'N/A';
+			var seconds = Math.floor(oneuser.substring(16) / 1000) % 60;
+			var minutes = Math.floor(oneuser.substring(16) / (1000 * 60)) % 60;
+			var hours = Math.floor(oneuser.substring(16) / (1000 * 60 * 60)) % 24;
+			var days = Math.floor(oneuser.substring(16) / (1000 * 60 * 60 * 24));
+			var formattedTime = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            cells[cells.length - 1].textContent = formattedTime || 'N/A';
         }
     } else {
         console.warn(`User with ID starting with ${userIdShort} not found in the table.`);
