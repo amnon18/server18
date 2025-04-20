@@ -124,6 +124,11 @@ io.on('connection', function(socket){
 			io.emit('ping1tx', eventName);
 			return;			
 		}
+		if (WorldCommandName == "gettime"){
+			console.log("In gettime");
+			io.emit('pingone', eventName);
+			return;			
+		}
 
 		if (WorldCommandName == "refresh"){
 			console.log("In refresh");
