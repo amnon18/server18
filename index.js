@@ -126,7 +126,7 @@ io.on('connection', function(socket){
 		}
 		if (WorldCommandName == "gettime"){
 			console.log("In gettime");
-			io.emit('pingone', eventName);
+			io.emit('gettime', eventName);
 			return;			
 		}
 
