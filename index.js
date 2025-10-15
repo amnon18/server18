@@ -97,8 +97,8 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('base', function(msg){
-		var eventName = msg.substring(0, 13);
-		var WorldCommandName = msg.substring(14, 21);
+		var eventName = msg.substring(0, 15);
+		var WorldCommandName = msg.substring(16, 21);
 		console.log("MSG:");
 		console.log(msg);
 		console.log("COMMAND:");
